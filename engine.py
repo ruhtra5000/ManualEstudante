@@ -9,14 +9,14 @@ class Manual(KnowledgeEngine):
                 "estudante a um curso da Instituição nas datas previstas no Calendário "+
                 "Acadêmico disponível no site da UFAPE.")
         #Falta adicionar a explicabilidade 
-        self.declare(SubEntrada(subMatr = True))
+        self.declare(SubEntrada(matr = True))
     
-    @Rule(SubEntrada(subMatr = True))
+    @Rule(SubEntrada(matr = True))
     def subMatricula(self):
         subEntrada = input("Deseja perguntar algo mais específico sobre matricula? ")
-        self.declare(SubEntrada(subTema = subEntrada))
+        self.declare(SubEntrada(txt = subEntrada))
     
-    @Rule(SubEntrada(subTema = "semestre"))
+    @Rule(SubEntrada(txt = "semestre"))
     def matrSemestral(self):
         print("A matrícula é da responsabilidade do(a) aluno(a) e deve ser " + 
                 "renovada semestralmente, obedecendo às datas divulgadas no " + 
@@ -27,7 +27,7 @@ class Manual(KnowledgeEngine):
                 "do Curso e à Comissão de Orientação e Acompanhamento Acadêmico " + 
                 "(COAA) do seu respectivo Curso.")
 
-    @Rule(SubEntrada(subTema = "reajuste"))
+    @Rule(SubEntrada(txt = "reajuste"))
     def matrReajuste(self):
         print("Para aquele aluno que efetuou a matrícula regular, mas deseja " +
                 "permutar ou excluir disciplina(s). A efetivação do reajuste da matrícula " +
