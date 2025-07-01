@@ -1,12 +1,12 @@
 from experta import *
-from facts import *
-from engine import *
+from engine_parts.facts import *
+from engine_parts.engine_instance import ManualEngine
+from interface.home import homepageInicial
 
-#Inicialização da aplicação, instanciando e 
-#rodando o motor de inferência 
+#Arquivo inicial que "limpa" o motor de inferencia
+#uma unica vez e renderiza a página inicial com streamlit
 
-engine = Manual()
-engine.reset()
-engine.declare(EntradaInicial(txt = input("Qual tema deseja pesquisar? ")))
+ManualEngine.reset()
+    
+homepageInicial()
 
-engine.run()
