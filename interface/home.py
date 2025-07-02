@@ -5,16 +5,16 @@ from engine_parts.facts import *
 from interface.matricula import matriculaInicial
 from interface.disciplina import disciplinaInicial
 from interface.cancelamento import cancelamentoInicial
+from utils.constants import ABA_LABELS
 
 #Função de carregamento da pagina inicial da aplicação
 def homepageInicial():
     st.title("Manual do Estudante")
-    aba_labels = ["Matrícula", "Disciplina", "Cancel. de Vínculo"]
-    abas = st.tabs(aba_labels)
+    abas = st.tabs(ABA_LABELS)
 
     st.session_state["aba_ativa"] = "Matrícula"
 
-    for i, nome in enumerate(aba_labels):
+    for i, nome in enumerate(ABA_LABELS):
         with abas[i]:
             processarOpcao(nome)
 
