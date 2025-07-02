@@ -10,3 +10,24 @@ class DisciplinaEntrada(Fact):
 
 class CancelamentoEntrada(Fact):
     txt: str
+
+class Sexo(Fact):
+    valor: str
+
+class Idade(Fact):
+    valor: int
+
+class EdFisica(Fact):
+    tipo: bool
+
+class DeficienciaFisica(Fact):
+    tipo: bool
+
+class IncapacidadeRelativa(Fact):
+    tipo: bool
+
+class MulherComFilhos(Fact):
+    tipo: bool
+
+class Emprego6h(Fact):
+    tipo: bool
