@@ -18,8 +18,8 @@ class Manual(KnowledgeEngine):
         premissas_formatadas = ', '.join(expl["premissas"])
 
         txt = '**Explicação:**\n\n'
-        txt += f'Premissas: {premissas_formatadas}\n\n'
-        txt += f'Fonte: {expl['fonte']}'
+        txt += f"Premissas: {premissas_formatadas}\n\n"
+        txt += f"Fonte: {expl['fonte']}"
 
         st.session_state['explicacao'] = txt
 
