@@ -13,6 +13,7 @@ def inicializarAplicacao():
         print("limpo")
         st.session_state['limpeza'] = True
         st.session_state["carregarPagina"] = True
+        st.session_state["explicacao"] = True
         ManualEngine.reset()
 
 inicializarAplicacao()
