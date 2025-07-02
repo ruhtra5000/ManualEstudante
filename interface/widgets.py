@@ -23,6 +23,28 @@ def campoTexto(
     
     return None
 
+def campoNumero(
+    chave: str,
+    texto_label: str,
+    minimo: float,
+    maximo: float
+): 
+    """Renderiza um campo de número com formulário e retorna o numero inserido."""
+    
+    with st.form(key=f"{chave}_form"):
+        entrada = st.number_input(
+            label=texto_label,
+            key=f"{chave}_number",
+            min_value=minimo,
+            max_value=maximo
+        )
+        submitted = st.form_submit_button("Enviar")
+
+    if submitted and entrada:
+        return entrada
+    
+    return None
+
 def campoOpcao(
     chave: str,
     texto_label: str,
