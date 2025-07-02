@@ -16,7 +16,7 @@ def disciplinaInicial():
     entrada = campoTexto(
         chave="disciplina",
         texto_label="Deseja saber algo mais sobre disciplinas?",
-        texto_placeholder="Ex.: cancelamento, dispensa"
+        texto_placeholder="Ex.: Cancelamento, Dispensa"
     )
     if entrada:
         ManualEngine.declare(DisciplinaEntrada(txt=entrada))
@@ -24,6 +24,7 @@ def disciplinaInicial():
         ManualEngine.run()
 
     match(st.session_state.get('carregarPagina')):
+        #Interfaces Principais
         case 'cancelamentoDisciplina':
             cancelamentoDisciplina()
         case 'dispensaDisciplina':
