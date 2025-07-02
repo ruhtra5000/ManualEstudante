@@ -31,6 +31,6 @@ def processarOpcao(opcao):
         case "Cancel. de Vínculo":
             cancelamentoInicial()
             
-    #No final, execute o motor — mas apenas se for a aba ativa
+    #No final, executa o motor — mas apenas se for a aba ativa
     if st.session_state.get("aba_ativa") == opcao:
         ManualEngine.run()
