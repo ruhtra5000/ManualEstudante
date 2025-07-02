@@ -22,3 +22,23 @@ def campoTexto(
         return entrada.lower().strip()
     
     return None
+
+def campoOpcao(
+    chave: str,
+    texto_label: str,
+    opcoes: list[str]
+):
+    """Renderiza uma pergunta com opções restritas e retorna a opção selecionada."""
+    
+    with st.form(key=f"{chave}_form"):
+        escolha = st.radio(
+            texto_label,
+            opcoes,
+            key=f"{chave}_radio"
+        )
+        submitted = st.form_submit_button("Enviar")
+
+    if submitted:
+        return escolha.lower().strip()
+    
+    return None
