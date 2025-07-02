@@ -11,6 +11,15 @@ class DisciplinaEntrada(Fact):
 class CancelamentoEntrada(Fact):
     txt: str
 
+class ApoioEstudantilEntrada(Fact):
+    txt: str
+
+class ColacaoGrauEntrada(Fact):
+    txt: str
+
+class EstagioEntrada(Fact):
+    txt: str
+
 class Sexo(Fact):
     valor: str
 
