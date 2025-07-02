@@ -12,10 +12,13 @@ class Manual(KnowledgeEngine):
 
     #Função que gera explicabilidade em texto
     def gerarExplicacao(self):
-        expl = self.explicacao[-1]
+        expl = self.explicacao[-1] 
+
+        #Junta as premissas em uma string separada por vírgulas
+        premissas_formatadas = ', '.join(expl["premissas"])
 
         txt = '**Explicação:**\n\n'
-        txt += f'Premissas: {expl['premissas']}\n\n'
+        txt += f'Premissas: {premissas_formatadas}\n\n'
         txt += f'Fonte: {expl['fonte']}'
 
         st.session_state['explicacao'] = txt
@@ -29,22 +32,11 @@ class Manual(KnowledgeEngine):
     #Matricula
     @Rule(MatriculaEntrada(txt = "semestre"))
     def matrSemestral(self):
-        st.write("A matrícula é da responsabilidade do(a) aluno(a) e deve ser " + 
-                "renovada semestralmente, obedecendo às datas divulgadas no " + 
-                "Calendário Acadêmico disponível no site da UFAPE, para o " + 
-                "prosseguimento de estudos, observando-se a sequência estabelecida no " + 
-                "currículo, os pré-requisitos e a compatibilidade de horários. Toda a " + 
-                "orientação necessária à matrícula pode ser obtida junto à Coordenação " + 
-                "do Curso e à Comissão de Orientação e Acompanhamento Acadêmico " + 
-                "(COAA) do seu respectivo Curso.")
-
+        st.session_state['carregarPagina'] = 'matriculaSemestral'
+        
     @Rule(MatriculaEntrada(txt = "reajuste"))
     def matrReajuste(self):
-        st.write("Para aquele aluno que efetuou a matrícula regular, mas deseja " +
-                "permutar ou excluir disciplina(s). A efetivação do reajuste da matrícula " +
-                "só ocorre se ainda houver vaga nas disciplinas que ele permutou, " +
-                "ficando em fila de espera classificada pelo ranking.")
-    
+        st.session_state['carregarPagina'] = 'reajusteMatricula'
 
     #Disciplina
     @Rule(DisciplinaEntrada(txt = "cancelamento"))
