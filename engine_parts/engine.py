@@ -15,8 +15,8 @@ class Manual(KnowledgeEngine):
         expl = self.explicacao[-1]
 
         txt = '**Explicação:**\n\n'
-        txt += f'Premissas: {expl['premissas']}\n\n'
-        txt += f'Fonte: {expl['fonte']}'
+        txt += f"Premissas: {expl['premissas']}\n\n"
+        txt += f"Fonte: {expl['fonte']}"
 
         st.session_state['explicacao'] = txt
 
