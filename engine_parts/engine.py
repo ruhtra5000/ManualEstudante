@@ -1475,7 +1475,7 @@ class Manual(KnowledgeEngine):
 
         self.gerarExplicacao()
     
-    @Rule(ApoioEstudantilEntrada(txt = "residência estudantil"))
+    @Rule(ApoioEstudantilEntrada(txt = "residência"))
     def apoioEstudantilResidencia(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilResidencia'
 
@@ -1503,7 +1503,7 @@ class Manual(KnowledgeEngine):
 
         self.gerarExplicacao()
     
-    @Rule(ApoioEstudantilEntrada(txt = "pagamento"))
+    @Rule(ApoioEstudantilEntrada(txt = "pag"))
     def apoioEstudantilPag(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilPag'
 
