@@ -10,6 +10,9 @@ from interface.avaliacoes import avaliacoesInicial
 from interface.faltasAbonos import faltasAbonosInicial
 from interface.recursosAdm import recursosAdmInicial
 from interface.direitosDeveres import direitosDeveresInicial
+from interface.apoioestudantil import apoioEstudantil
+from interface.colacaodegrau import colacaoGrau
+from interface.estagio import estagio
 
 #Função de carregamento da pagina inicial da aplicação
 def homepageInicial():
@@ -42,7 +45,12 @@ def processarOpcao(opcao):
             recursosAdmInicial()
         case "Direitos e Deveres":
             direitosDeveresInicial()
-
+        case "Apoio Estudantil":
+            apoioEstudantil()
+        case "Colação de Grau":
+            colacaoGrau()
+        case "Estágio":
+            estagio()
             
     #No final, executa o motor — mas apenas se for a aba ativa
     if st.session_state.get("aba_ativa") == opcao:
