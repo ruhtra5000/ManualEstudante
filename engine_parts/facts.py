@@ -62,5 +62,29 @@ class TrancamentoForcaMaior(Fact): #Sinaliza se o motivo de trancamento de matri
 class TempoRestanteCurso(Fact): #Se o usuário é capaz de finalizar o curso
     tipo: bool                  #no tempo restante
 
+class AvaliacaoEntrada(Fact): #Entrada de revisão de prova
+    txt: str
+
+class PrazoRevisaoOK(Fact): #Se o prazo de revisão de prova está ok
+    tipo: bool
+
+class FaltasAbonosEntrada(Fact): #Entrada de faltas e abonos
+    txt: str
+
+class ExercicioMilitar(Fact): #Se o usuário está em exercício militar
+    tipo: bool
+
+class Gestante(Fact): #Se o usuário é gestante
+    tipo: bool
+
+class RecursosAdmEntrada(Fact): #Entrada de recursos administrativos
+    txt: str
+
+class Nota1(Fact): # Nota da primeira avaliação
+    valor: float
+
+class Nota2(Fact): # Nota da segunda avaliação
+    valor: float
+
 class ReprovacoesMesmaMateria(Fact): #Se o usuário ja reprovou 4 vezes numa mesma matéria
     tipo: bool
