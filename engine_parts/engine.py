@@ -955,8 +955,19 @@ class Manual(KnowledgeEngine):
     #   /_/    \_\ .__/ \___/|_|\___/  |______|___/\__|\__,_|\__,_|\__,_|_| |_|\__|_|_|
     #            | |                                                                   
     #            |_|                                                                                                                
-    #                           
-    @Rule(ApoioEstudantilEntrada(txt = "monitoria"))
+    # 
+
+    #BOLSAS
+
+    @Rule(ApoioEstudantilEntrada(txt = "bolsas"))
+    def ApoioEstudantilPergunta1(self):
+        st.session_state['carregarPagina'] = 'perguntaMonitoria'
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "bolsas"),
+        InteresseMonitoria(tipo = True)
+    )
+
     def apoioEstudantilMonitoria(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilMonitoria'
 
@@ -970,23 +981,180 @@ class Manual(KnowledgeEngine):
 
         self.gerarExplicacao()
 
+    @Rule(
+        ApoioEstudantilEntrada(txt = "bolsas"),   
+        InteresseMonitoria(tipo = False)
+    )
 
-#    _____  ______ _____ _    _ _____   _____  ____   _____            _____  __  __ 
-#   |  __ \|  ____/ ____| |  | |  __ \ / ____|/ __ \ / ____|     /\   |  __ \|  \/  |
-#   | |__) | |__ | |    | |  | | |__) | (___ | |  | | (___      /  \  | |  | | \  / |
-#   |  _  /|  __|| |    | |  | |  _  / \___ \| |  | |\___ \    / /\ \ | |  | | |\/| |
-#   | | \ \| |___| |____| |__| | | \ \ ____) | |__| |____) |  / ____ \| |__| | |  | |
-#   |_|  \_\______\_____|\____/|_|  \_\_____/ \____/|_____/  /_/    \_\_____/|_|  |_|
-#                                                                                                                                                                       
+    def ApoioEstudantilPergunta2(self):
+        st.session_state['carregarPagina'] = 'perguntaPet'
 
-    @Rule(RecursosAdmEntrada(txt = "reapreciação"))
-    def reapreciacao(self):
-        st.session_state['carregarPagina'] = 'reapreciação'
+    @Rule(
+        ApoioEstudantilEntrada(txt = "bolsas"),
+        InteressePet(tipo = True)
+    )
 
+    def apoioEstudantilPet(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilPet'
+
+        #Explicabilidade
         self.explicacao.append({
-            'nome': 'reapreciacao',
-            'premissas': ['Aba recursos administrativos', 'Busca por \"reapreciação\"'],
-            'fonte': 'Pág. 30 do Manual do Estudante 2023',
+            'nome': 'apoioEstudantilPet',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"pet\"'],
+            'fonte': 'Pág. 32 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+        
+    @Rule(
+        ApoioEstudantilEntrada(txt = "bolsas"),   
+        InteressePet(tipo = False)
+    )
+
+    def ApoioEstudantilPergunta3(self):
+        st.session_state['carregarPagina'] = 'perguntaBia'
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "bolsas"),
+        InteresseBia(tipo = True)
+    )
+
+    def apoioEstudantilBia(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilBia'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilBia',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"bia\"'],
+            'fonte': 'Pág. 32 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "bolsas"),   
+        InteresseBia(tipo = False)
+    )
+
+    def ApoioEstudantilPergunta4(self):
+        st.session_state['carregarPagina'] = 'perguntaPibid'
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "bolsas"),
+        InteressePibid(tipo = True)
+    )
+
+    def apoioEstudantilPibid(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilPibid'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilPibid',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"pibid\"'],
+            'fonte': 'Pág. 33 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+    
+    @Rule(
+        ApoioEstudantilEntrada(txt = "bolsas"),   
+        InteressePibid(tipo = False)
+    )
+
+    def ApoioEstudantilPergunta5(self):
+        st.session_state['carregarPagina'] = 'perguntaPibic'
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "bolsas"),
+        InteressePibic(tipo = True)
+    )
+        
+    def apoioEstudantilPibic(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilPibic'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilPibic',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"pibic\"'],
+            'fonte': 'Pág. 33 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+    
+     
+    @Rule(
+        ApoioEstudantilEntrada(txt = "bolsas"),   
+        InteressePibic(tipo = False)
+    )
+
+    def ApoioEstudantilPergunta6(self):
+        st.session_state['carregarPagina'] = 'perguntaPrp'
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "bolsas"),
+        InteressePrp(tipo = True)
+    )
+
+    def apoioEstudantilPrp(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilPrp'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilPrp',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"prp\"'],
+            'fonte': 'Pág. 33 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "bolsas"),   
+        InteressePrp(tipo = False)
+    )
+
+    def ApoioEstudantilPergunta7(self):
+        st.session_state['carregarPagina'] = 'perguntaExtensao'
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "bolsas"),
+        InteresseExtensao(tipo = True)
+    )
+
+    def apoioEstudantilExtensao(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilExtensao'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilExtensao',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"extensão\"'],
+            'fonte': 'Pág. 33 e 34 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "bolsas"),   
+        InteresseExtensao(tipo = False)
+    )
+    def apoioEstudantilFinalB(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilFinalBolsas'
+
+    @Rule(ApoioEstudantilEntrada(txt = "monitoria"))
+    def apoioEstudantilMonitoria(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilMonitoria'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilMonitoria',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"monitoria\"'],
+            'fonte': 'Pág. 32 do Manual do Estudante 2023',
             'tempo': len(self.explicacao) + 1
         })
 
@@ -1019,33 +1187,7 @@ class Manual(KnowledgeEngine):
         })
 
         self.gerarExplicacao()
-
-    @Rule(ApoioEstudantilEntrada(txt = "pavi"))
-    def apoioEstudantilPavi(self):
-        st.session_state['carregarPagina'] = 'apoioEstudantilPavi'
-
-        #Explicabilidade
-        self.explicacao.append({
-            'nome': 'apoioEstudantilPavi',
-            'premissas': ['Aba Apoio Estudantil', 'Busca por \"pavi\"'],
-            'fonte': 'Pág. 32 do Manual do Estudante 2023 e resolução CEPE Nº 676/2008',
-            'tempo': len(self.explicacao) + 1
-        })
-
-        self.gerarExplicacao()
-
-    @Rule(RecursosAdmEntrada(txt = "recurso"))
-    def recurso(self):
-        st.session_state['carregarPagina'] = 'recurso'
-
-        self.explicacao.append({
-            'nome': 'recurso',
-            'premissas': ['Aba recursos administrativos', 'Busca por \"recurso\"'],
-            'fonte': 'Pág. 30 do Manual do Estudante 2023',
-            'tempo': len(self.explicacao) + 1
-        })
-
-        self.gerarExplicacao()
+    
     @Rule(ApoioEstudantilEntrada(txt = "pibid"))
     def apoioEstudantilPibid(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilPibid'
@@ -1059,7 +1201,7 @@ class Manual(KnowledgeEngine):
         })
 
         self.gerarExplicacao()
-        
+    
     @Rule(ApoioEstudantilEntrada(txt = "pibic"))
     def apoioEstudantilPibic(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilPibic'
@@ -1073,7 +1215,7 @@ class Manual(KnowledgeEngine):
         })
 
         self.gerarExplicacao()
-
+    
     @Rule(ApoioEstudantilEntrada(txt = "prp"))
     def apoioEstudantilPrp(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilPrp'
@@ -1101,8 +1243,19 @@ class Manual(KnowledgeEngine):
         })
 
         self.gerarExplicacao()
+
+    #AUXILIO
     
-    @Rule(ApoioEstudantilEntrada(txt = "mobilidade"))
+    @Rule(ApoioEstudantilEntrada(txt = "auxílios"))
+
+    def ApoioEstudantilPerguntaAuxilio1(self):
+        st.session_state['carregarPagina'] = 'perguntaMobilidade'
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "auxílios"),
+        InteresseMobilidade(tipo = True)
+    )
+
     def apoioEstudantilMobilidade(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilMobilidade'
 
@@ -1116,7 +1269,19 @@ class Manual(KnowledgeEngine):
 
         self.gerarExplicacao()
 
-    @Rule(ApoioEstudantilEntrada(txt = "pai"))
+    @Rule(
+        ApoioEstudantilEntrada(txt = "auxílios"),   
+        InteresseMobilidade(tipo = False)
+    )
+
+    def ApoioEstudantilPerguntaAuxilio2(self):
+        st.session_state['carregarPagina'] = 'perguntaPai'
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "auxílios"),
+        InteressePai(tipo = True)
+    )
+
     def apoioEstudantilPai(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilPai'
 
@@ -1129,8 +1294,20 @@ class Manual(KnowledgeEngine):
         })
 
         self.gerarExplicacao()
-    
-    @Rule(ApoioEstudantilEntrada(txt = "pad"))
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "auxílios"),   
+        InteressePai(tipo = False)
+    )
+
+    def ApoioEstudantilPerguntaAuxilio3(self):
+        st.session_state['carregarPagina'] = 'perguntaPad'
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "auxílios"),
+        InteressePad(tipo = True)
+    )
+
     def apoioEstudantilPad(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilPad'
 
@@ -1144,7 +1321,19 @@ class Manual(KnowledgeEngine):
 
         self.gerarExplicacao()
 
-    @Rule(ApoioEstudantilEntrada(txt = "residencia"))
+    @Rule(
+        ApoioEstudantilEntrada(txt = "auxílios"),   
+        InteressePad(tipo = False)
+    )
+
+    def ApoioEstudantilPerguntaAuxilio4(self):
+        st.session_state['carregarPagina'] = 'perguntaResidencia'
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "auxílios"),
+        InteresseResidencia(tipo = True)
+    )
+
     def apoioEstudantilResidencia(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilResidencia'
 
@@ -1157,7 +1346,149 @@ class Manual(KnowledgeEngine):
         })
 
         self.gerarExplicacao()
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "auxílios"),   
+        InteresseResidencia(tipo = False)
+    )
+
+    def ApoioEstudantilPerguntaAuxilio5(self):
+        st.session_state['carregarPagina'] = 'perguntaVoltaAoLar'
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "auxílios"),
+        InteresseVoltaAoLar(tipo = True)
+    )
     
+    def apoioEstudantilVoltaAoLar(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilVoltaAoLar'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilVoltaAoLar',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"volta ao lar\"'],
+            'fonte': 'Pág. 35 do Manual do Estudante 2023 e resolução Nº 228/2013 do CEPE',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "auxílios"),   
+        InteresseVoltaAoLar(tipo = False)
+    )
+
+    def ApoioEstudantilPerguntaAuxilio6(self):
+        st.session_state['carregarPagina'] = 'perguntaPag'
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "auxílios"),
+        InteressePag(tipo = True)
+    )
+
+    def apoioEstudantilPag(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilPag'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilPag',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"pag\"'],
+            'fonte': 'Pág. 35 do Manual do Estudante 2023 e resolução Nº 112/2014 do CONSU',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "auxílios"),   
+        InteressePag(tipo = False)
+    )
+
+    def ApoioEstudantilPerguntaAuxilio7(self):
+        st.session_state['carregarPagina'] = 'perguntaRural'
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "auxílios"),
+        InteresseRural(tipo = True)
+    )
+
+    def apoioEstudantilRural(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilRural'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilRural',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"rural\"'],
+            'fonte': 'Pág. 36 do Manual do Estudante 2023 e resolução Nº 081/2012 do CEPE',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "auxílios"),   
+        InteresseRural(tipo = False)
+    )
+
+    def apoioEstudantilFinalA(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilFinalAuxilios'
+
+    @Rule(ApoioEstudantilEntrada(txt = "mobilidade"))
+    def apoioEstudantilMobilidade(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilMobilidade'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilMobilidade',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"mobilidade\"'],
+            'fonte': 'Pág. 34 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+    
+    @Rule(ApoioEstudantilEntrada(txt = "pai"))
+    def apoioEstudantilPai(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilPai'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilPai',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"pai\"'],
+            'fonte': 'Pág. 34 do Manual do Estudante 2023 e resolução Nº 288/2013 do CEPE',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    @Rule(ApoioEstudantilEntrada(txt = "pad"))
+    def apoioEstudantilPad(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilPad'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilPad',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"pad\"'],
+            'fonte': 'Pág. 34 do Manual do Estudante 2023 e resolução Nº 205/2015 do CEPE',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+    
+    @Rule(ApoioEstudantilEntrada(txt = "residência estudantil"))
+    def apoioEstudantilResidencia(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilResidencia'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilResidencia',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"residencia\"'],
+            'fonte': 'Pág. 34 e 35 do Manual do Estudante 2023 e resolução Nº 327/2008 do CONSU, Nº 219/2009 do CEPE e Nº 062/2012 do CONSU',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+     
     @Rule(ApoioEstudantilEntrada(txt = "volta ao lar"))
     def apoioEstudantilVoltaAoLar(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilVoltaAoLar'
@@ -1172,7 +1503,7 @@ class Manual(KnowledgeEngine):
 
         self.gerarExplicacao()
     
-    @Rule(ApoioEstudantilEntrada(txt = "pag"))
+    @Rule(ApoioEstudantilEntrada(txt = "pagamento"))
     def apoioEstudantilPag(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilPag'
 
@@ -1181,20 +1512,6 @@ class Manual(KnowledgeEngine):
             'nome': 'apoioEstudantilPag',
             'premissas': ['Aba Apoio Estudantil', 'Busca por \"pag\"'],
             'fonte': 'Pág. 35 do Manual do Estudante 2023 e resolução Nº 112/2014 do CONSU',
-            'tempo': len(self.explicacao) + 1
-        })
-
-        self.gerarExplicacao()
-    
-    @Rule(ApoioEstudantilEntrada(txt = "cultura"))
-    def apoioEstudantilCultura(self):
-        st.session_state['carregarPagina'] = 'apoioEstudantilCultura'
-
-        #Explicabilidade
-        self.explicacao.append({
-            'nome': 'apoioEstudantilCultura',
-            'premissas': ['Aba Apoio Estudantil', 'Busca por \"cultura\"'],
-            'fonte': 'Pág. 35 e 36 do Manual do Estudante 2023 e resolução Nº 204/2015 do CEPE',
             'tempo': len(self.explicacao) + 1
         })
 
@@ -1214,6 +1531,145 @@ class Manual(KnowledgeEngine):
 
         self.gerarExplicacao()
 
+
+    #APOIO
+    
+    @Rule(ApoioEstudantilEntrada(txt = "programas de apoio"))
+
+    def ApoioEstudantilPerguntaApoio1(self):
+        st.session_state['carregarPagina'] = 'perguntaPavi'
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "programas de apoio"),
+        InteressePavi(tipo = True)
+    )
+
+    def apoioEstudantilPavi(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilPavi'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilPavi',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"pavi\"'],
+            'fonte': 'Pág. 32 do Manual do Estudante 2023 e resolução CEPE Nº 676/2008',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "programas de apoio"),   
+        InteressePavi(tipo = False)
+    )
+
+    def ApoioEstudantilPerguntaApoio2(self):
+        st.session_state['carregarPagina'] = 'perguntaCultura'
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "programas de apoio"),
+        InteresseCultura(tipo = True)
+    )
+    
+    def apoioEstudantilCultura(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilCultura'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilCultura',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"cultura\"'],
+            'fonte': 'Pág. 35 e 36 do Manual do Estudante 2023 e resolução Nº 204/2015 do CEPE',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "programas de apoio"),   
+        InteresseCultura(tipo = False)
+    )
+
+    def ApoioEstudantilPerguntaApoio3(self):
+        st.session_state['carregarPagina'] = 'perguntaRemt'
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "programas de apoio"),
+        InteresseRemt(tipo = True)
+    )
+
+    def apoioEstudantilRemt(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilRemt'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilRemt',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"remt\"'],
+            'fonte': 'Pág. 36 do Manual do Estudante 2023 e resolução Nº 199/2015 UFRPE/CEPE',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "programas de apoio"),   
+        InteresseRemt(tipo = False)
+    )
+
+    def ApoioEstudantilPerguntaApoio4(self):
+        st.session_state['carregarPagina'] = 'perguntaAcessibilidade'
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "programas de apoio"),
+        InteresseAcessibilidade(tipo = True)
+    )
+
+    def apoioEstudantilAcessibilidade(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilAcessibilidade'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilAcessibilidade',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"acessibilidade\"'],
+            'fonte': 'Pág. 36 e 37 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+    
+    @Rule(
+        ApoioEstudantilEntrada(txt = "programas de apoio"),   
+        InteresseAcessibilidade(tipo = False)
+    )
+    def apoioEstudantilFinalApoio(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilFinal'
+
+    @Rule(ApoioEstudantilEntrada(txt = "pavi"))
+    def apoioEstudantilPavi(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilPavi'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilPavi',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"pavi\"'],
+            'fonte': 'Pág. 32 do Manual do Estudante 2023 e resolução CEPE Nº 676/2008',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    @Rule(ApoioEstudantilEntrada(txt = "cultura"))
+    def apoioEstudantilCultura(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilCultura'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilCultura',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"cultura\"'],
+            'fonte': 'Pág. 35 e 36 do Manual do Estudante 2023 e resolução Nº 204/2015 do CEPE',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+    
     @Rule(ApoioEstudantilEntrada(txt = "remt"))
     def apoioEstudantilRemt(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilRemt'
@@ -1227,7 +1683,7 @@ class Manual(KnowledgeEngine):
         })
 
         self.gerarExplicacao()
-    
+
     @Rule(ApoioEstudantilEntrada(txt = "acessibilidade"))
     def apoioEstudantilAcessibilidade(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilAcessibilidade'
@@ -1237,6 +1693,40 @@ class Manual(KnowledgeEngine):
             'nome': 'apoioEstudantilAcessibilidade',
             'premissas': ['Aba Apoio Estudantil', 'Busca por \"acessibilidade\"'],
             'fonte': 'Pág. 36 e 37 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    #    _____  ______ _____ _    _ _____   _____  ____   _____            _____  __  __ 
+    #   |  __ \|  ____/ ____| |  | |  __ \ / ____|/ __ \ / ____|     /\   |  __ \|  \/  |
+    #   | |__) | |__ | |    | |  | | |__) | (___ | |  | | (___      /  \  | |  | | \  / |
+    #   |  _  /|  __|| |    | |  | |  _  / \___ \| |  | |\___ \    / /\ \ | |  | | |\/| |
+    #   | | \ \| |___| |____| |__| | | \ \ ____) | |__| |____) |  / ____ \| |__| | |  | |
+    #   |_|  \_\______\_____|\____/|_|  \_\_____/ \____/|_____/  /_/    \_\_____/|_|  |_|
+    #                                                                                                                                                                       
+
+    @Rule(RecursosAdmEntrada(txt = "reapreciação"))
+    def reapreciacao(self):
+        st.session_state['carregarPagina'] = 'reapreciação'
+
+        self.explicacao.append({
+            'nome': 'reapreciacao',
+            'premissas': ['Aba recursos administrativos', 'Busca por \"reapreciação\"'],
+            'fonte': 'Pág. 30 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    @Rule(RecursosAdmEntrada(txt = "recurso"))
+    def recurso(self):
+        st.session_state['carregarPagina'] = 'recurso'
+
+        self.explicacao.append({
+            'nome': 'recurso',
+            'premissas': ['Aba recursos administrativos', 'Busca por \"recurso\"'],
+            'fonte': 'Pág. 30 do Manual do Estudante 2023',
             'tempo': len(self.explicacao) + 1
         })
 
