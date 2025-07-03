@@ -5,4 +5,5 @@ ABA_LABELS = [
     "Avaliações e Notas",
     "Faltas e Abonos",
     "Recursos Adm.",
+    "Direitos e Deveres",
 ]
