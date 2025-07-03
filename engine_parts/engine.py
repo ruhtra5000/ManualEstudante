@@ -1152,7 +1152,7 @@ class Manual(KnowledgeEngine):
         st.session_state['carregarPagina'] = 'apoioEstudantilFinalBolsas'
 
     @Rule(ApoioEstudantilEntrada(txt = "monitoria"))
-    def apoioEstudantilMonitoria(self):
+    def apoioEstudantilMonitoria1(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilMonitoria'
 
         #Explicabilidade
@@ -1166,7 +1166,7 @@ class Manual(KnowledgeEngine):
         self.gerarExplicacao()
     
     @Rule(ApoioEstudantilEntrada(txt = "pet"))
-    def apoioEstudantilPet(self):
+    def apoioEstudantilPet1(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilPet'
 
         #Explicabilidade
@@ -1180,7 +1180,7 @@ class Manual(KnowledgeEngine):
         self.gerarExplicacao()
     
     @Rule(ApoioEstudantilEntrada(txt = "bia"))
-    def apoioEstudantilBia(self):
+    def apoioEstudantilBia1(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilBia'
 
         #Explicabilidade
@@ -1194,7 +1194,7 @@ class Manual(KnowledgeEngine):
         self.gerarExplicacao()
     
     @Rule(ApoioEstudantilEntrada(txt = "pibid"))
-    def apoioEstudantilPibid(self):
+    def apoioEstudantilPibid1(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilPibid'
 
         #Explicabilidade
@@ -1208,7 +1208,7 @@ class Manual(KnowledgeEngine):
         self.gerarExplicacao()
     
     @Rule(ApoioEstudantilEntrada(txt = "pibic"))
-    def apoioEstudantilPibic(self):
+    def apoioEstudantilPibic1(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilPibic'
 
         #Explicabilidade
@@ -1222,7 +1222,7 @@ class Manual(KnowledgeEngine):
         self.gerarExplicacao()
     
     @Rule(ApoioEstudantilEntrada(txt = "prp"))
-    def apoioEstudantilPrp(self):
+    def apoioEstudantilPrp1(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilPrp'
 
         #Explicabilidade
@@ -1236,7 +1236,7 @@ class Manual(KnowledgeEngine):
         self.gerarExplicacao()
 
     @Rule(ApoioEstudantilEntrada(txt = "extensão"))
-    def apoioEstudantilExtensao(self):
+    def apoioEstudantilExtensao1(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilExtensao'
 
         #Explicabilidade
@@ -1439,7 +1439,7 @@ class Manual(KnowledgeEngine):
         st.session_state['carregarPagina'] = 'apoioEstudantilFinalAuxilios'
 
     @Rule(ApoioEstudantilEntrada(txt = "mobilidade"))
-    def apoioEstudantilMobilidade(self):
+    def apoioEstudantilMobilidade1(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilMobilidade'
 
         #Explicabilidade
@@ -1453,7 +1453,7 @@ class Manual(KnowledgeEngine):
         self.gerarExplicacao()
     
     @Rule(ApoioEstudantilEntrada(txt = "pai"))
-    def apoioEstudantilPai(self):
+    def apoioEstudantilPai1(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilPai'
 
         #Explicabilidade
@@ -1467,7 +1467,7 @@ class Manual(KnowledgeEngine):
         self.gerarExplicacao()
 
     @Rule(ApoioEstudantilEntrada(txt = "pad"))
-    def apoioEstudantilPad(self):
+    def apoioEstudantilPad1(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilPad'
 
         #Explicabilidade
@@ -1481,7 +1481,7 @@ class Manual(KnowledgeEngine):
         self.gerarExplicacao()
     
     @Rule(ApoioEstudantilEntrada(txt = "residência"))
-    def apoioEstudantilResidencia(self):
+    def apoioEstudantilResidencia1(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilResidencia'
 
         #Explicabilidade
@@ -1495,7 +1495,7 @@ class Manual(KnowledgeEngine):
         self.gerarExplicacao()
      
     @Rule(ApoioEstudantilEntrada(txt = "volta ao lar"))
-    def apoioEstudantilVoltaAoLar(self):
+    def apoioEstudantilVoltaAoLar1(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilVoltaAoLar'
 
         #Explicabilidade
@@ -1509,7 +1509,7 @@ class Manual(KnowledgeEngine):
         self.gerarExplicacao()
     
     @Rule(ApoioEstudantilEntrada(txt = "pag"))
-    def apoioEstudantilPag(self):
+    def apoioEstudantilPag1(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilPag'
 
         #Explicabilidade
@@ -1523,7 +1523,7 @@ class Manual(KnowledgeEngine):
         self.gerarExplicacao()
 
     @Rule(ApoioEstudantilEntrada(txt = "rural"))
-    def apoioEstudantilRural(self):
+    def apoioEstudantilRural1(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilRural'
 
         #Explicabilidade
@@ -1648,7 +1648,7 @@ class Manual(KnowledgeEngine):
         st.session_state['carregarPagina'] = 'apoioEstudantilFinal'
 
     @Rule(ApoioEstudantilEntrada(txt = "pavi"))
-    def apoioEstudantilPavi(self):
+    def apoioEstudantilPavi1(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilPavi'
 
         #Explicabilidade
@@ -1662,7 +1662,7 @@ class Manual(KnowledgeEngine):
         self.gerarExplicacao()
 
     @Rule(ApoioEstudantilEntrada(txt = "cultura"))
-    def apoioEstudantilCultura(self):
+    def apoioEstudantilCultura1(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilCultura'
 
         #Explicabilidade
@@ -1676,7 +1676,7 @@ class Manual(KnowledgeEngine):
         self.gerarExplicacao()
     
     @Rule(ApoioEstudantilEntrada(txt = "remt"))
-    def apoioEstudantilRemt(self):
+    def apoioEstudantilRemt1(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilRemt'
 
         #Explicabilidade
@@ -1690,7 +1690,7 @@ class Manual(KnowledgeEngine):
         self.gerarExplicacao()
 
     @Rule(ApoioEstudantilEntrada(txt = "acessibilidade"))
-    def apoioEstudantilAcessibilidade(self):
+    def apoioEstudantilAcessibilidade1(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilAcessibilidade'
 
         #Explicabilidade
@@ -1702,6 +1702,7 @@ class Manual(KnowledgeEngine):
         })
 
         self.gerarExplicacao()
+
 
     #    _____  ______ _____ _    _ _____   _____  ____   _____            _____  __  __ 
     #   |  __ \|  ____/ ____| |  | |  __ \ / ____|/ __ \ / ____|     /\   |  __ \|  \/  |
