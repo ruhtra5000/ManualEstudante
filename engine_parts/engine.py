@@ -18,6 +18,7 @@ class Manual(KnowledgeEngine):
         premissas_formatadas = ', '.join(expl["premissas"])
 
         txt = '**Explicação:**\n\n'
+        txt += f'Regra aplicada: {expl['nome']}\n\n'
         txt += f'Premissas: {premissas_formatadas}\n\n'
         txt += f'Fonte: {expl['fonte']}'
 
@@ -78,13 +79,17 @@ class Manual(KnowledgeEngine):
 
         self.gerarExplicacao()
     
-    @Rule(MatriculaEntrada(txt = "aluno especial"))
+    @Rule(
+        MatriculaEntrada(txt = "aluno especial"),
+        ~ConcluinteUfape()
+    )
     def matriculaAlunoEspecialPergunta1(self):
         st.session_state['carregarPagina'] = 'perguntaConcluinte'
 
     @Rule(
         MatriculaEntrada(txt = "aluno especial"),
-        ConcluinteUfape(tipo = False)
+        ConcluinteUfape(tipo = False),
+        ~Egresso()
     )
     def matriculaAlunoEspecialPergunta2(self):
         st.session_state['carregarPagina'] = 'perguntaEgresso'
@@ -141,7 +146,10 @@ class Manual(KnowledgeEngine):
 
         self.gerarExplicacao()
 
-    @Rule(MatriculaEntrada(txt = "trancamento"))
+    @Rule(
+        MatriculaEntrada(txt = "trancamento"),
+        ~PeriodosCursados()
+    )
     def trancamentoMatriculaPergunta1(self):
         st.session_state['carregarPagina'] = 'perguntaPeriodoCursado'
 
@@ -164,7 +172,8 @@ class Manual(KnowledgeEngine):
 
     @Rule(
         MatriculaEntrada(txt = "trancamento"),
-        PeriodosCursados(valor = P(lambda v: v > 2))
+        PeriodosCursados(valor = P(lambda v: v > 2)),
+        ~Trancamentos()
     )
     def trancamentoMatriculaPergunta2(self):
         st.session_state['carregarPagina'] = 'perguntaTrancamentos'
@@ -188,7 +197,8 @@ class Manual(KnowledgeEngine):
 
     @Rule(
         MatriculaEntrada(txt = "trancamento"),
-        Trancamentos(valor = P(lambda v: v < 4))
+        Trancamentos(valor = P(lambda v: v < 4)),
+        ~TrancamentoForcaMaior()
     )
     def trancamentoMatriculaPergunta3(self):
         st.session_state['carregarPagina'] = 'perguntaForcaMaior'
@@ -277,7 +287,8 @@ class Manual(KnowledgeEngine):
     
     @Rule(
         DisciplinaEntrada(txt = "dispensa"), 
-        EdFisica(tipo = True)
+        EdFisica(tipo = True),
+        ~Idade()
     )
     def dispensaEdFisicaPergunta1(self):
         st.session_state['carregarPagina'] = 'perguntaIdade'
@@ -303,7 +314,8 @@ class Manual(KnowledgeEngine):
     @Rule(
         DisciplinaEntrada(txt = "dispensa"), 
         EdFisica(tipo = True), 
-        Idade(valor=P(lambda v: v < 30))
+        Idade(valor=P(lambda v: v < 30)),
+        ~DeficienciaFisica()
     )
     def dispensaEdFisicaPergunta2(self):
         st.session_state['carregarPagina'] = 'perguntaDeficiencia'
@@ -329,7 +341,8 @@ class Manual(KnowledgeEngine):
     @Rule(
         DisciplinaEntrada(txt = "dispensa"), 
         EdFisica(tipo = True), 
-        DeficienciaFisica(tipo = False)
+        DeficienciaFisica(tipo = False),
+        ~MulherComFilhos()
     )
     def dispensaEdFisicaPergunta3(self):
         st.session_state['carregarPagina'] = 'perguntaFilho'
@@ -357,7 +370,8 @@ class Manual(KnowledgeEngine):
     @Rule(
         DisciplinaEntrada(txt = "dispensa"), 
         EdFisica(tipo = True), 
-        MulherComFilhos(tipo = False)
+        MulherComFilhos(tipo = False),
+        ~IncapacidadeRelativa()
     )
     def dispensaEdFisicaPergunta4(self):
         st.session_state['carregarPagina'] = 'perguntaIncapacidadeRelativa'
@@ -383,7 +397,8 @@ class Manual(KnowledgeEngine):
     @Rule(
         DisciplinaEntrada(txt = "dispensa"), 
         EdFisica(tipo = True), 
-        IncapacidadeRelativa(tipo = False)
+        IncapacidadeRelativa(tipo = False),
+        ~Emprego6h()
     )
     def dispensaEdFisicaPergunta5(self):
         st.session_state['carregarPagina'] = 'perguntaEmprego'
