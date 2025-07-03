@@ -873,6 +873,8 @@ class Manual(KnowledgeEngine):
     #                         )_)                            __/ |                
     #                                                       |___/    
 
+    # Regra para colação em separado
+
     @Rule(ColacaoGrauEntrada(txt = "colação em separado"))
     def colacaoEmSeparado(self):
         st.session_state['carregarPagina'] = 'colacaoEmSeparado'
@@ -886,6 +888,8 @@ class Manual(KnowledgeEngine):
         })
 
         self.gerarExplicacao()
+
+    # Regra para aluno laureado
 
     @Rule(ColacaoGrauEntrada(txt = "aluno laureado"))
     def colacaoAlunoLaureado(self):
@@ -909,7 +913,10 @@ class Manual(KnowledgeEngine):
     #   |______|___/\__\__,_|\__, |_|\___/ 
     #                         __/ |        
     #                        |___/ 
-    #      
+    #   
+
+    # Regra para estágio obrigatório
+
     @Rule(EstagioEntrada(txt = "estágio obrigatório"))
     def estagioObrigatorio(self):
         st.session_state['carregarPagina'] = 'estagioObrigatorio'
@@ -924,6 +931,8 @@ class Manual(KnowledgeEngine):
 
         self.gerarExplicacao()
       
+    # Regra para estágio não obrigatório
+
     @Rule(EstagioEntrada(txt = "estágio não obrigatório"))
     def estagioNaoObrigatorio(self):
         st.session_state['carregarPagina'] = 'estagioNaoObrigatorio'
@@ -937,6 +946,8 @@ class Manual(KnowledgeEngine):
         })
 
         self.gerarExplicacao()
+
+    # Regra para requisitos de estágio
       
     @Rule(EstagioEntrada(txt = "requisitos"))
     def estagioRequisitos(self):
@@ -964,6 +975,8 @@ class Manual(KnowledgeEngine):
 
     #BOLSAS
 
+    #Regra para caso o aluno busque por bolsas, inicie perguntando se ele tem interesse em programa de monitoria
+
     @Rule(ApoioEstudantilEntrada(txt = "bolsas"))
     def ApoioEstudantilPergunta1(self):
         st.session_state['carregarPagina'] = 'perguntaMonitoria'
@@ -972,6 +985,8 @@ class Manual(KnowledgeEngine):
         ApoioEstudantilEntrada(txt = "bolsas"),
         InteresseMonitoria(tipo = True)
     )
+
+    #Caso sim, redireciona para a página de monitoria
 
     def apoioEstudantilMonitoria(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilMonitoria'
@@ -991,6 +1006,8 @@ class Manual(KnowledgeEngine):
         InteresseMonitoria(tipo = False)
     )
 
+    #Caso não, redireciona para a pergunta sobre o PET
+
     def ApoioEstudantilPergunta2(self):
         st.session_state['carregarPagina'] = 'perguntaPet'
 
@@ -998,6 +1015,8 @@ class Manual(KnowledgeEngine):
         ApoioEstudantilEntrada(txt = "bolsas"),
         InteressePet(tipo = True)
     )
+
+    #Caso o aluno tenha interesse no PET, redireciona para a página do PET
 
     def apoioEstudantilPet(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilPet'
@@ -1017,6 +1036,8 @@ class Manual(KnowledgeEngine):
         InteressePet(tipo = False)
     )
 
+    #Caso o aluno não tenha interesse no PET, redireciona para a pergunta sobre a BIA (Bolsas de Iniciação Acadêmica)
+
     def ApoioEstudantilPergunta3(self):
         st.session_state['carregarPagina'] = 'perguntaBia'
 
@@ -1024,6 +1045,8 @@ class Manual(KnowledgeEngine):
         ApoioEstudantilEntrada(txt = "bolsas"),
         InteresseBia(tipo = True)
     )
+
+    #Caso o aluno tenha interesse na BIA, redireciona para a página de BIA
 
     def apoioEstudantilBia(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilBia'
@@ -1044,6 +1067,8 @@ class Manual(KnowledgeEngine):
         InteresseBia(tipo = False)
     )
 
+    #Caso o aluno não tenha interesse na BIA, redireciona para a pergunta sobre o PIBID
+
     def ApoioEstudantilPergunta4(self):
         st.session_state['carregarPagina'] = 'perguntaPibid'
 
@@ -1051,6 +1076,8 @@ class Manual(KnowledgeEngine):
         ApoioEstudantilEntrada(txt = "bolsas"),
         InteressePibid(tipo = True)
     )
+
+    #Caso o aluno tenha interesse no PIBID, redireciona para a página do PIBID
 
     def apoioEstudantilPibid(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilPibid'
@@ -1070,6 +1097,8 @@ class Manual(KnowledgeEngine):
         InteressePibid(tipo = False)
     )
 
+    #Caso o aluno não tenha interesse no PIBID, redireciona para a pergunta sobre o PIBIC
+
     def ApoioEstudantilPergunta5(self):
         st.session_state['carregarPagina'] = 'perguntaPibic'
 
@@ -1078,6 +1107,8 @@ class Manual(KnowledgeEngine):
         InteressePibic(tipo = True)
     )
         
+    #Caso o aluno tenha interesse no PIBIC, redireciona para a página do PIBIC
+
     def apoioEstudantilPibic(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilPibic'
 
@@ -1097,6 +1128,8 @@ class Manual(KnowledgeEngine):
         InteressePibic(tipo = False)
     )
 
+    #Caso o aluno não tenha interesse no PIBIC, redireciona para a pergunta sobre o PRP
+
     def ApoioEstudantilPergunta6(self):
         st.session_state['carregarPagina'] = 'perguntaPrp'
 
@@ -1104,6 +1137,8 @@ class Manual(KnowledgeEngine):
         ApoioEstudantilEntrada(txt = "bolsas"),
         InteressePrp(tipo = True)
     )
+
+    #Caso o aluno tenha interesse no PRP, redireciona para a página do PRP
 
     def apoioEstudantilPrp(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilPrp'
@@ -1123,6 +1158,8 @@ class Manual(KnowledgeEngine):
         InteressePrp(tipo = False)
     )
 
+    #Caso o aluno não tenha interesse no PRP, redireciona para a pergunta sobre Extensão
+
     def ApoioEstudantilPergunta7(self):
         st.session_state['carregarPagina'] = 'perguntaExtensao'
 
@@ -1130,6 +1167,8 @@ class Manual(KnowledgeEngine):
         ApoioEstudantilEntrada(txt = "bolsas"),
         InteresseExtensao(tipo = True)
     )
+
+    #Caso o aluno tenha interesse em Extensão, redireciona para a página de Extensão
 
     def apoioEstudantilExtensao(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilExtensao'
@@ -1148,8 +1187,13 @@ class Manual(KnowledgeEngine):
         ApoioEstudantilEntrada(txt = "bolsas"),   
         InteresseExtensao(tipo = False)
     )
+
+    #Caso o aluno não tenha interesse em Extensão, redireciona para a página final informando que não possui mais opções de bolsas
+
     def apoioEstudantilFinalB(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilFinalBolsas'
+
+    # Regras para apoio estudantil em bolsas com busca direta por termos específicos
 
     @Rule(ApoioEstudantilEntrada(txt = "monitoria"))
     def apoioEstudantilMonitoria1(self):
@@ -1251,6 +1295,8 @@ class Manual(KnowledgeEngine):
 
     #AUXILIO
     
+    #Regra para caso o aluno busque por auxílios, inicie perguntando se ele tem interesse em programa de mobilidade
+
     @Rule(ApoioEstudantilEntrada(txt = "auxílios"))
 
     def ApoioEstudantilPerguntaAuxilio1(self):
@@ -1260,6 +1306,8 @@ class Manual(KnowledgeEngine):
         ApoioEstudantilEntrada(txt = "auxílios"),
         InteresseMobilidade(tipo = True)
     )
+
+    #Caso sim, redireciona para a página de mobilidade
 
     def apoioEstudantilMobilidade(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilMobilidade'
@@ -1279,6 +1327,8 @@ class Manual(KnowledgeEngine):
         InteresseMobilidade(tipo = False)
     )
 
+    #Caso não, redireciona para a pergunta sobre o programa PAI
+
     def ApoioEstudantilPerguntaAuxilio2(self):
         st.session_state['carregarPagina'] = 'perguntaPai'
 
@@ -1286,6 +1336,8 @@ class Manual(KnowledgeEngine):
         ApoioEstudantilEntrada(txt = "auxílios"),
         InteressePai(tipo = True)
     )
+
+    #Caso o aluno tenha interesse no PAI, redireciona para a página do PAI
 
     def apoioEstudantilPai(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilPai'
@@ -1305,6 +1357,8 @@ class Manual(KnowledgeEngine):
         InteressePai(tipo = False)
     )
 
+    #Caso o aluno não tenha interesse no PAI, redireciona para a pergunta sobre o PAD
+
     def ApoioEstudantilPerguntaAuxilio3(self):
         st.session_state['carregarPagina'] = 'perguntaPad'
 
@@ -1312,6 +1366,8 @@ class Manual(KnowledgeEngine):
         ApoioEstudantilEntrada(txt = "auxílios"),
         InteressePad(tipo = True)
     )
+
+    #Caso o aluno tenha interesse no PAD, redireciona para a página do PAD
 
     def apoioEstudantilPad(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilPad'
@@ -1331,6 +1387,8 @@ class Manual(KnowledgeEngine):
         InteressePad(tipo = False)
     )
 
+    #Caso o aluno não tenha interesse no PAD, redireciona para a pergunta sobre residência
+
     def ApoioEstudantilPerguntaAuxilio4(self):
         st.session_state['carregarPagina'] = 'perguntaResidencia'
 
@@ -1338,6 +1396,8 @@ class Manual(KnowledgeEngine):
         ApoioEstudantilEntrada(txt = "auxílios"),
         InteresseResidencia(tipo = True)
     )
+
+    #Caso o aluno tenha interesse em residência, redireciona para a página de residência
 
     def apoioEstudantilResidencia(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilResidencia'
@@ -1357,6 +1417,8 @@ class Manual(KnowledgeEngine):
         InteresseResidencia(tipo = False)
     )
 
+    #Caso o aluno não tenha interesse em residência, redireciona para a pergunta sobre volta ao lar
+
     def ApoioEstudantilPerguntaAuxilio5(self):
         st.session_state['carregarPagina'] = 'perguntaVoltaAoLar'
 
@@ -1365,6 +1427,8 @@ class Manual(KnowledgeEngine):
         InteresseVoltaAoLar(tipo = True)
     )
     
+    #Caso o aluno tenha interesse em volta ao lar, redireciona para a página de volta ao lar
+
     def apoioEstudantilVoltaAoLar(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilVoltaAoLar'
 
@@ -1383,6 +1447,8 @@ class Manual(KnowledgeEngine):
         InteresseVoltaAoLar(tipo = False)
     )
 
+    #Caso o aluno não tenha interesse em volta ao lar, redireciona para a pergunta sobre o PAG
+
     def ApoioEstudantilPerguntaAuxilio6(self):
         st.session_state['carregarPagina'] = 'perguntaPag'
 
@@ -1390,6 +1456,8 @@ class Manual(KnowledgeEngine):
         ApoioEstudantilEntrada(txt = "auxílios"),
         InteressePag(tipo = True)
     )
+
+    #Caso o aluno tenha interesse no PAG, redireciona para a página do PAG
 
     def apoioEstudantilPag(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilPag'
@@ -1409,6 +1477,8 @@ class Manual(KnowledgeEngine):
         InteressePag(tipo = False)
     )
 
+    #Caso o aluno não tenha interesse no PAG, redireciona para a pergunta sobre o programa rural
+
     def ApoioEstudantilPerguntaAuxilio7(self):
         st.session_state['carregarPagina'] = 'perguntaRural'
 
@@ -1416,6 +1486,8 @@ class Manual(KnowledgeEngine):
         ApoioEstudantilEntrada(txt = "auxílios"),
         InteresseRural(tipo = True)
     )
+
+    #Caso o aluno tenha interesse no programa rural, redireciona para a página do programa rural
 
     def apoioEstudantilRural(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilRural'
@@ -1435,8 +1507,12 @@ class Manual(KnowledgeEngine):
         InteresseRural(tipo = False)
     )
 
+    #Caso o aluno não tenha interesse no programa rural, redireciona para a página final informando que não possui mais opções de auxílios
+
     def apoioEstudantilFinalA(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilFinalAuxilios'
+
+    # Regras para apoio estudantil em auxílios com busca direta por termos específicos
 
     @Rule(ApoioEstudantilEntrada(txt = "mobilidade"))
     def apoioEstudantilMobilidade1(self):
@@ -1539,6 +1615,8 @@ class Manual(KnowledgeEngine):
 
     #APOIO
     
+    #Regra para caso o aluno busque por programas de apoio, inicie perguntando se ele tem interesse no programa PAVI
+
     @Rule(ApoioEstudantilEntrada(txt = "programas de apoio"))
 
     def ApoioEstudantilPerguntaApoio1(self):
@@ -1548,6 +1626,8 @@ class Manual(KnowledgeEngine):
         ApoioEstudantilEntrada(txt = "programas de apoio"),
         InteressePavi(tipo = True)
     )
+
+    #Caso sim, redireciona para a página do PAVI
 
     def apoioEstudantilPavi(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilPavi'
@@ -1567,6 +1647,8 @@ class Manual(KnowledgeEngine):
         InteressePavi(tipo = False)
     )
 
+    #Caso não, redireciona para a pergunta sobre cultura
+
     def ApoioEstudantilPerguntaApoio2(self):
         st.session_state['carregarPagina'] = 'perguntaCultura'
 
@@ -1574,6 +1656,8 @@ class Manual(KnowledgeEngine):
         ApoioEstudantilEntrada(txt = "programas de apoio"),
         InteresseCultura(tipo = True)
     )
+
+    #Caso o aluno tenha interesse em cultura, redireciona para a página de apoio estudantil cultura
     
     def apoioEstudantilCultura(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilCultura'
@@ -1593,6 +1677,8 @@ class Manual(KnowledgeEngine):
         InteresseCultura(tipo = False)
     )
 
+    #Caso o aluno não tenha interesse em cultura, redireciona para a pergunta sobre o REMT
+
     def ApoioEstudantilPerguntaApoio3(self):
         st.session_state['carregarPagina'] = 'perguntaRemt'
 
@@ -1600,6 +1686,8 @@ class Manual(KnowledgeEngine):
         ApoioEstudantilEntrada(txt = "programas de apoio"),
         InteresseRemt(tipo = True)
     )
+
+    #Caso o aluno tenha interesse no REMT, redireciona para a página do REMT
 
     def apoioEstudantilRemt(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilRemt'
@@ -1619,6 +1707,8 @@ class Manual(KnowledgeEngine):
         InteresseRemt(tipo = False)
     )
 
+    #Caso o aluno não tenha interesse no REMT, redireciona para a pergunta sobre acessibilidade
+
     def ApoioEstudantilPerguntaApoio4(self):
         st.session_state['carregarPagina'] = 'perguntaAcessibilidade'
 
@@ -1626,6 +1716,8 @@ class Manual(KnowledgeEngine):
         ApoioEstudantilEntrada(txt = "programas de apoio"),
         InteresseAcessibilidade(tipo = True)
     )
+
+    #Caso o aluno tenha interesse em acessibilidade, redireciona para a página de apoio estudantil acessibilidade
 
     def apoioEstudantilAcessibilidade(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilAcessibilidade'
@@ -1644,8 +1736,13 @@ class Manual(KnowledgeEngine):
         ApoioEstudantilEntrada(txt = "programas de apoio"),   
         InteresseAcessibilidade(tipo = False)
     )
+
+    #Caso o aluno não tenha interesse em acessibilidade, redireciona para a página final informando que não possui mais opções de apoio
+
     def apoioEstudantilFinalApoio(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilFinal'
+
+    # Regras para apoio estudantil em programas de apoio com busca direta por termos específicos
 
     @Rule(ApoioEstudantilEntrada(txt = "pavi"))
     def apoioEstudantilPavi1(self):
