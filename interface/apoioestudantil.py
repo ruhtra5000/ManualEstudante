@@ -62,7 +62,8 @@ def apoioEstudantil():
 
 #Interface para o programa de monitoria
 def apoioEstudantilMonitoria():
-    st.write("Objetiva incentivar os(as) alunos(as) que " +
+    st.write("Programa de monitoria:" + 
+            "\n\nObjetiva incentivar os(as) alunos(as) que " +
             "demonstrarem interesse e aptidão pela carreira acadêmica, " +
             "assegurando a cooperação do corpo discente ao corpo docente nas " +
             "atividades do ensino. Oferece duas categorias: Monitor Bolsista e Monitor Voluntário. ")
@@ -71,7 +72,8 @@ def apoioEstudantilMonitoria():
 
 #Interface para o programa PET
 def apoioEstudantilPet():
-    st.write("É destinado a grupos de alunos que demonstrem potencial, interesse e habilidade destacados em vários " +
+    st.write("Programa de Educação Tutorial (PET): " +
+            "\n\nÉ destinado a grupos de alunos que demonstrem potencial, interesse e habilidade destacados em vários " +
             "cursos da Universidade. É integrado por grupos tutoriais de " +
             "aprendizagem e tem por objetivo promover a formação ampla e de " +
             "qualidade dos (as) alunos (as) de graduação envolvidos direta ou " +
@@ -84,7 +86,8 @@ def apoioEstudantilPet():
 
 #Interface para o programa BIA
 def apoioEstudantilBia():
-    st.write("O objetivo do programa é favorecer a adaptação à vida acadêmica " +
+    st.write("Bolsa de Incentivo Acadêmica (BIA): " +
+            "\n\nO objetivo do programa é favorecer a adaptação à vida acadêmica " +
             "universitária de alunos no 1º ano do curso da UFAPE (preferencialmente " +
             "Licenciatura) que tenham sido egressos das escolas públicas da Rede " +
             "Estadual de Pernambuco, por meio de ajuda financeira, desenvolvendo, " +
@@ -97,7 +100,8 @@ def apoioEstudantilBia():
 
 #Interface para o programa PAVI
 def apoioEstudantilPavi():
-    st.write("Tem o objetivo de oportunizar e promover, dentro do processo " +
+    st.write("Programa de AƟvidade de Vivência Interdisciplinar (PAVI): " +
+            "\n\nTem o objetivo de oportunizar e promover, dentro do processo " +
             "ensino-aprendizagem, o treinamento das aptidões e habilidades técnicas " +
             "dos discentes da UFAPE, sob orientação, por meio da interconexão entre " +
             "os conteúdos teórico-práticos dos diversos componentes curriculares, " +
@@ -110,7 +114,8 @@ def apoioEstudantilPavi():
 
 #Interface para o programa PIBID
 def apoioEstudantilPibid():
-    st.write("Tem como objetivo fomentar a iniciação à docência de estudantes dos " +
+    st.write("Programa de Iniciação à Docência (PIBID): " +
+            "\n\nTem como objetivo fomentar a iniciação à docência de estudantes dos " +
             "cursos de licenciatura da UFAPE, contribuir para a formação continuada " +
             "dos professores da educação básica em Pernambuco e, em consequência, " +
             "melhorar o desempenho dos estudantes das redes municipais e " +
@@ -121,7 +126,8 @@ def apoioEstudantilPibid():
 
 #Interface para o programa PIBIC
 def apoioEstudantilPibic():
-    st.write("O objetivo do programa é incentivar o(a) estudante a se envolver com a " +
+    st.write("Programa de Iniciação Cienơfica (PIBIC/CNPq): " +
+            "\n\nO objetivo do programa é incentivar o(a) estudante a se envolver com a " +
             "pesquisa científica na Universidade, dando-lhe maior motivação na " +
             "realização do seu curso e melhores condições de aprendizagem. O(a) " +
             "aluno(a) deve entrar em contato com um professor orientador, elaborando " +
@@ -133,7 +139,8 @@ def apoioEstudantilPibic():
 
 #Interface para o programa PRP
 def apoioEstudantilPrp():
-    st.write("Tem como objetivos: aperfeiçoar a formação dos discentes de cursos de " +
+    st.write("Programa de Residência Pedagógica (PRP): " +
+            "\n\nTem como objetivos: aperfeiçoar a formação dos discentes de cursos de " +
             "licenciatura, por meio do desenvolvimento de projetos que fortaleçam o " +
             "campo da prática e conduzam o licenciado a exercitar de forma ativa a " +
             "relação entre teoria e prática profissional docente, utilizando coleta de " +
@@ -151,7 +158,8 @@ def apoioEstudantilPrp():
 
 #Interface para o programa de extensão
 def apoioEstudantilExtensao():
-    st.write("Têm por objetivo atender aos(às) alunos(as) que tenham interesse em se " +
+    st.write("Programas de Extensão: " +
+            "\n\nTêm por objetivo atender aos(às) alunos(as) que tenham interesse em se " +
             "integrar nas atividades de extensão, em projetos dirigidos para a ação " +
             "comunitária. Alguns programas são direcionados a uma ação social relevante, " +
             "como é o caso do Programa de Alfabetização. Anualmente os trabalhos dos " +
@@ -161,7 +169,8 @@ def apoioEstudantilExtensao():
 
 #Interface para o programa de mobilidade acadêmica
 def apoioEstudantilMobilidade():
-    st.write("Os estudantes dos cursos de graduação da UFAPE podem obter vínculo " +
+    st.write("Programa de Mobilidade Acadêmica: " +
+            "\n\nOs estudantes dos cursos de graduação da UFAPE podem obter vínculo " +
             "temporário em qualquer das instituições federais de ensino superior " +
             "(Universidades e Institutos Federais, vinculados à Andifes), por até dois " +
             "semestres letivos, para cumprirem disciplinas e/ou estágios, devendo, para " +
@@ -174,7 +183,8 @@ def apoioEstudantilMobilidade():
 
 #Interface para o programa PAI
 def apoioEstudantilPai():
-    st.write("Tem por finalidade apoiar os alunos ingressantes de recorte social, " +
+    st.write("Programa de Apoio ao Ingressante (PAI): " +
+            "\n\nTem por finalidade apoiar os alunos ingressantes de recorte social, " +
             "com bolsa temporária de 3 meses até que o mesmo conheça a Instituição e " +
             "possa concorrer a vagas em programas de permanência. ")
     
@@ -182,7 +192,8 @@ def apoioEstudantilPai():
 
 #Interface para o programa PAD
 def apoioEstudantilPad():
-    st.write("Se refere ao antigo Programa de Bolsas de Permanência, o qual foi " +
+    st.write("Programa de Apoio ao Discente (PAD): " +
+            "\n\nSe refere ao antigo Programa de Bolsas de Permanência, o qual foi " +
             "modificado na Resolução Nº 237/2014 do CEPE. Este programa baseia-se em " +
             "três modalidades de benefícios: Bolsa de Apoio Acadêmico e Auxílios " +
             "Transporte e Alimentação. ")
@@ -191,7 +202,8 @@ def apoioEstudantilPad():
 
 #Interface para o programa de residência estudantil
 def apoioEstudantilResidencia():
-    st.write("Tem por objetivo priorizar a permanência de discentes com recorte social " +
+    st.write("Programa de Residência Estudantil: " +
+            "\n\nTem por objetivo priorizar a permanência de discentes com recorte social " +
             "originários de outros Estados ou que não residam no município de Garanhuns. " +
             "Os(as) discentes selecionados(as) para residência recebem Auxílio Manutenção " +
             "e quando não há vaga, na disponibilidade de recurso financeiro, o Auxílio " +
@@ -201,7 +213,8 @@ def apoioEstudantilResidencia():
 
 #Interface para o programa PAG
 def apoioEstudantilPag():
-    st.write("Os estudantes dos cursos de graduação da UFAPE podem obter vínculo " +
+    st.write("Programa de Apoio à Gestante (PAG): " +
+            "\n\nOs estudantes dos cursos de graduação da UFAPE podem obter vínculo " +
             "temporário em qualquer das instituições federais de ensino superior " +
             "(Universidades e Institutos Federais, vinculados à Andifes), por até dois " +
             "semestres letivos, para cumprirem disciplinas e/ou estágios, devendo, para " +
@@ -214,14 +227,16 @@ def apoioEstudantilPag():
 
 #Interface para o programa de volta ao lar
 def apoioEstudantilVoltaAoLar():
-    st.write("Tem por finalidade custear, uma vez em cada semestre, ajuda de custo " +
+    st.write("Programa de Volta ao Lar: " +
+            "\n\nTem por finalidade custear, uma vez em cada semestre, ajuda de custo " +
             "para os discentes residentes visitarem seus familiares durante o recesso escolar.")
     
     st.info(st.session_state.get('explicacao'))
 
 #Interface para o programa de incentivo a cultura
 def apoioEstudantilCultura():
-    st.write("Tem por finalidade incentivar discentes matriculados em cursos de " +
+    st.write("Programa de IncenƟvo à Cultura: " +
+            "\n\nTem por finalidade incentivar discentes matriculados em cursos de " +
             "graduação presenciais à prática musical com participações em eventos " +
             "estudantis, regionais, estaduais e nacionais através do Coral Universitário " +
             "com a concessão de Bolsa Coral Universitário.")
@@ -230,7 +245,8 @@ def apoioEstudantilCultura():
 
 #Interface para o programa de hospeda rural
 def apoioEstudantilRural():
-    st.write("Tem como objetivo liberar o Auxílio Recepção/Hospedagem para alunos de " +
+    st.write("Programa Hospeda Rural: " +
+            "\n\nTem como objetivo liberar o Auxílio Recepção/Hospedagem para alunos de " +
             "graduação da UFAPE quando recebem alunos estrangeiros em sua residência, " +
             "através da Cooperação Internacional.")
                 
@@ -238,7 +254,8 @@ def apoioEstudantilRural():
 
 #Interface para o programa REMT
 def apoioEstudantilRemt():
-    st.write("Disciplina a movimentação de estudantes, através da qual os mesmos podem " +
+    st.write("Regime Especial de Movimentação Temporária (REMT): " +
+            "\n\nDisciplina a movimentação de estudantes, através da qual os mesmos podem " +
             "cursar blocos (Regime seriado) ou disciplinas isoladas (Créditos) temporariamente " +
             "em uma Unidade Acadêmica da UFRPE diferente da sua Unidade de origem.")
     
@@ -246,7 +263,8 @@ def apoioEstudantilRemt():
 
 #Interface para secretaria de acessibilidade
 def apoioEstudantilAcessibilidade():
-    st.write("A Secretaria integra uma rede de Núcleos de Acessibilidade, fomentada nas " +
+    st.write("Secretaria de Acessibilidade: " +
+            "\n\nA Secretaria integra uma rede de Núcleos de Acessibilidade, fomentada nas " +
             "Instituições Federais de Ensino Superior (IFES) por meio do “Programa Incluir” " +
             "e tem o papel de atuar na identificação de demandas e na proposição e " +
             "dinamização de ações institucionais de acessibilidade. Além das diversas " +
