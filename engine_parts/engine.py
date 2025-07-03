@@ -442,3 +442,54 @@ class Manual(KnowledgeEngine):
         '''st.header("Cancelamento de vínculo")
         st.write("O cancelamento de registro acadêmico é o desligamento efetivo da UFAPE.")'''
         #Falta adicionar a explicabilidade 
+
+
+    #                      _ _            /\/|                    _   _       _            
+    #       /\            | (_)          |/\/                    | \ | |     | |           
+    #      /  \__   ____ _| |_  __ _  ___ ___   ___  ___    ___  |  \| | ___ | |_ __ _ ___ 
+    #     / /\ \ \ / / _` | | |/ _` |/ __/ _ \ / _ \/ __|  / _ \ | . ` |/ _ \| __/ _` / __|
+    #    / ____ \ V / (_| | | | (_| | (_| (_) |  __/\__ \ |  __/ | |\  | (_) | || (_| \__ \
+    #   /_/    \_\_/ \__,_|_|_|\__,_|\___\___/ \___||___/  \___| |_| \_|\___/ \__\__,_|___/
+    #                                 )_)                                                  
+    #                                                                                      
+
+    # Regra de página inicial para a aba "Avaliações e Notas"
+    @Rule(AvaliacaoEntrada(txt = "revisão"))
+    def revisaoProva(self):
+        st.session_state['carregarPagina'] = 'revisaoProva'
+
+    # Regra para verificar se o prazo de revisão está OK
+    @Rule(
+        AvaliacaoEntrada(txt = "revisão"),
+        PrazoRevisaoOK(tipo = True)
+    )
+    def revisaoPrazoOK(self):
+        st.session_state['carregarPagina'] = 'revisaoPrazoOK'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'revisaoProva',
+            'premissas': ['Aba avaliações e notas', 'Busca por \"revisão\"','Prazo de revisão OK'],
+            'fonte': 'Pág. 28 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    # Regra para verificar se o prazo de revisão expirou
+    @Rule(
+        AvaliacaoEntrada(txt = "revisão"),
+        PrazoRevisaoOK(tipo = False)
+    )
+    def revisaoPrazoExpirado(self):
+        st.session_state['carregarPagina'] = 'revisaoPrazoExpirado'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'revisaoPrazoExpirado',
+            'premissas': ['Aba avaliações e notas', 'Busca por \"revisão\"','Prazo de revisão expirado'],
+            'fonte': 'Pág. 28 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
