@@ -6,4 +6,7 @@ ABA_LABELS = [
     "Faltas e Abonos",
     "Recursos Adm.",
     "Direitos e Deveres",
+    "Apoio Estudantil",
+    "Colação de Grau",
+    "Estágio"
 ]
