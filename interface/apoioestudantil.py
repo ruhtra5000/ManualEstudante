@@ -1,7 +1,7 @@
 import streamlit as st
 from engine_parts.engine_instance import ManualEngine
 from engine_parts.facts import *
-from interface.widgets import campoTexto
+from interface.widgets import campoTexto, campoOpcao, campoNumero
 
 def apoioEstudantil():
     st.header("Apoio Estudantil")
@@ -14,7 +14,7 @@ def apoioEstudantil():
     entrada = campoTexto(
         chave="apoio_estudantil",
         texto_label="Deseja saber algo mais sobre apoio estudantil?",
-        texto_placeholder="Ex.: moradia, alimentação, monitoria, PET, BIA, PAVI, PIBID, PIBIC, PRP, PAI, PAD, etc.."
+        texto_placeholder="Ex.: Bolsas, Auxílios, Programas de apoio",
     )
     
     if entrada:
@@ -59,6 +59,55 @@ def apoioEstudantil():
             apoioEstudantilRemt()
         case 'apoioEstudantilAcessibilidade':
             apoioEstudantilAcessibilidade()
+        case 'apoioEstudantilFinalBolsas':
+            apoioEstudantilFinalBolsas()
+        case 'apoioEstudantilFinalAuxilios':
+            apoioEstudantilFinalAuxilios()
+        case 'apoioEstudantilFinal':
+            apoioEstudantilFinal()
+
+        #Perguntas sobre bolsas
+
+        case 'perguntaMonitoria':
+            perguntaMonitoria()
+        case 'perguntaPet':
+            perguntaPet()
+        case 'perguntaBia':
+            perguntaBia()
+        case 'perguntaPibid':
+            perguntaPibid()
+        case 'perguntaPibic':
+            perguntaPibic()
+        case 'perguntaPrp':
+            perguntaPrp()
+        case 'perguntaExtensao':
+            perguntaExtensao()
+
+        #Perguntas sobre auxílios
+        case 'perguntaMobilidade':
+            perguntaMobilidade()
+        case 'perguntaPai':
+            perguntaPai()
+        case 'perguntaPad':
+            perguntaPad()
+        case 'perguntaResidencia':
+            perguntaResidencia()
+        case 'perguntaVoltaAoLar':
+            perguntaVoltaAoLar()
+        case 'perguntaPag':
+            perguntaPag()
+        case 'perguntaRural':
+            perguntaRural()
+
+        #Perguntas sobre apoio
+        case 'perguntaPavi':
+            perguntaPavi()
+        case 'perguntaCultura':
+            perguntaCultura()
+        case 'perguntaRemt':
+            perguntaRemt()
+        case 'perguntaAcessibilidade':
+            perguntaAcessibilidade()
 
 #Interface para o programa de monitoria
 def apoioEstudantilMonitoria():
@@ -100,7 +149,7 @@ def apoioEstudantilBia():
 
 #Interface para o programa PAVI
 def apoioEstudantilPavi():
-    st.write("Programa de AƟvidade de Vivência Interdisciplinar (PAVI): " +
+    st.write("Programa de Atividade de Vivência Interdisciplinar (PAVI): " +
             "\n\nTem o objetivo de oportunizar e promover, dentro do processo " +
             "ensino-aprendizagem, o treinamento das aptidões e habilidades técnicas " +
             "dos discentes da UFAPE, sob orientação, por meio da interconexão entre " +
@@ -126,7 +175,7 @@ def apoioEstudantilPibid():
 
 #Interface para o programa PIBIC
 def apoioEstudantilPibic():
-    st.write("Programa de Iniciação Cienơfica (PIBIC/CNPq): " +
+    st.write("Programa de Iniciação Cientifica (PIBIC/CNPq): " +
             "\n\nO objetivo do programa é incentivar o(a) estudante a se envolver com a " +
             "pesquisa científica na Universidade, dando-lhe maior motivação na " +
             "realização do seu curso e melhores condições de aprendizagem. O(a) " +
@@ -235,7 +284,7 @@ def apoioEstudantilVoltaAoLar():
 
 #Interface para o programa de incentivo a cultura
 def apoioEstudantilCultura():
-    st.write("Programa de IncenƟvo à Cultura: " +
+    st.write("Programa de Incentivo à Cultura: " +
             "\n\nTem por finalidade incentivar discentes matriculados em cursos de " +
             "graduação presenciais à prática musical com participações em eventos " +
             "estudantis, regionais, estaduais e nacionais através do Coral Universitário " +
@@ -281,3 +330,269 @@ def apoioEstudantilAcessibilidade():
             "eventos e atividades promovidas pela UFAPE.")
     
     st.info(st.session_state.get('explicacao'))
+
+#Interface para final das bolsas
+def apoioEstudantilFinalBolsas():
+    st.write("Não possuimos mais opções de bolsas disponíveis")
+
+#Interface para final dos auxilios
+def apoioEstudantilFinalAuxilios():
+    st.write("Não possuimos mais opções de auxilios disponíveis")
+
+#Interface para final do apoio
+def apoioEstudantilFinal():
+    st.write("Não possuimos mais opções de apoio disponíveis")
+
+#Pergunta sobre monitória
+def perguntaMonitoria():
+    resposta = campoOpcao (
+        'Monitoria',
+        'Você tem interesse no programa de monitoria?',
+        ['Sim', 'Não']
+    )
+
+    if not resposta is None and resposta == 'não':
+        ManualEngine.declare(InteresseMonitoria(tipo = False))
+
+    elif not resposta is None and resposta == 'sim':
+        ManualEngine.declare(InteresseMonitoria(tipo = True))
+
+#Pergunta sobre PET
+def perguntaPet():
+    resposta = campoOpcao (
+        'Pet',
+        'Você tem interesse no programa de educação tutorial?',
+        ['Sim', 'Não']
+    )
+
+    if not resposta is None and resposta == 'não':
+        ManualEngine.declare(InteressePet(tipo = False))
+
+    elif not resposta is None and resposta == 'sim':
+        ManualEngine.declare(InteressePet(tipo = True))
+
+#Pergunta sobre BIA
+def perguntaBia():
+    resposta = campoOpcao (
+        'Bia',
+        'Você tem interesse no programa de incentivo acadêmico?',
+        ['Sim', 'Não']
+    )
+
+    if not resposta is None and resposta == 'não':
+        ManualEngine.declare(InteresseBia(tipo = False))
+
+    elif not resposta is None and resposta == 'sim':
+        ManualEngine.declare(InteresseBia(tipo = True))
+
+#Pergunta sobre PIBID
+def perguntaPibid():
+    resposta = campoOpcao (
+        'Pibid',
+        'Você tem interesse no programa de iniciação a docência?',
+        ['Sim', 'Não']
+    )
+
+    if not resposta is None and resposta == 'não':
+        ManualEngine.declare(InteressePibid(tipo = False))
+
+    elif not resposta is None and resposta == 'sim':
+        ManualEngine.declare(InteressePibid(tipo = True))
+
+#Pergunta sobre PIBIC
+def perguntaPibic():
+    resposta = campoOpcao (
+        'Pibic',
+        'Você tem interesse no programa de iniciação ciêntifica?',
+        ['Sim', 'Não']
+    )
+
+    if not resposta is None and resposta == 'não':
+        ManualEngine.declare(InteressePibic(tipo = False))
+
+    elif not resposta is None and resposta == 'sim':
+        ManualEngine.declare(InteressePibic(tipo = True))
+
+#Pergunta sobre PRP
+def perguntaPrp():
+    resposta = campoOpcao (
+        'Prp',
+        'Você tem interesse no programa de residência pedagógica?',
+        ['Sim', 'Não']
+    )
+
+    if not resposta is None and resposta == 'não':
+        ManualEngine.declare(InteressePrp(tipo = False))
+
+    elif not resposta is None and resposta == 'sim':
+        ManualEngine.declare(InteressePrp(tipo = True))
+
+#Pergunta sobre Extensão
+def perguntaExtensao():
+    resposta = campoOpcao (
+        'Extensao',
+        'Você tem interesse no programa de extensão?',
+        ['Sim', 'Não']
+    )
+
+    if not resposta is None and resposta == 'não':
+        ManualEngine.declare(InteresseExtensao(tipo = False))
+
+    elif not resposta is None and resposta == 'sim':
+        ManualEngine.declare(InteresseExtensao(tipo = True))
+
+#Pergunta sobre Mobilidade
+def perguntaMobilidade():
+    resposta = campoOpcao (
+        'Mobilidade',
+        'Você tem interesse no programa de mobilidade acadêmica?',
+        ['Sim', 'Não']
+    )
+
+    if not resposta is None and resposta == 'não':
+        ManualEngine.declare(InteresseMobilidade(tipo = False))
+
+    elif not resposta is None and resposta == 'sim':
+        ManualEngine.declare(InteresseMobilidade(tipo = True))
+
+#Pergunta sobre Pai
+def perguntaPai():
+    resposta = campoOpcao (
+        'Pai',
+        'Você tem interesse no programa de apoio ao ingressante?',
+        ['Sim', 'Não']
+    )
+
+    if not resposta is None and resposta == 'não':
+        ManualEngine.declare(InteressePai(tipo = False))
+
+    elif not resposta is None and resposta == 'sim':
+        ManualEngine.declare(InteressePai(tipo = True))
+
+#Pergunta sobre PAD
+def perguntaPad():
+    resposta = campoOpcao (
+        'Pad',
+        'Você tem interesse no programa de apoio ao discente?',
+        ['Sim', 'Não']
+    )
+
+    if not resposta is None and resposta == 'não':
+        ManualEngine.declare(InteressePad(tipo = False))
+
+    elif not resposta is None and resposta == 'sim':
+        ManualEngine.declare(InteressePad(tipo = True))
+
+#Pergunta sobre Residência
+def perguntaResidencia():
+    resposta = campoOpcao (
+        'Residencia',
+        'Você tem interesse no programa de residência estudantil?',
+        ['Sim', 'Não']
+    )
+
+    if not resposta is None and resposta == 'não':
+        ManualEngine.declare(InteresseResidencia(tipo = False))
+
+    elif not resposta is None and resposta == 'sim':
+        ManualEngine.declare(InteresseResidencia(tipo = True))
+
+#Pergunta sobre Volta ao Lar
+def perguntaVoltaAoLar():
+    resposta = campoOpcao (
+        'VoltaAoLar',
+        'Você tem interesse no programa de volta ao lar?',
+        ['Sim', 'Não']
+    )
+
+    if not resposta is None and resposta == 'não':
+        ManualEngine.declare(InteresseVoltaAoLar(tipo = False))
+
+    elif not resposta is None and resposta == 'sim':
+        ManualEngine.declare(InteresseVoltaAoLar(tipo = True))
+
+#Pergunta sobre PAG
+def perguntaPag():
+    resposta = campoOpcao (
+        'Pag',
+        'Você tem interesse no programa de apoio à gestante?',
+        ['Sim', 'Não']
+    )
+
+    if not resposta is None and resposta == 'não':
+        ManualEngine.declare(InteressePag(tipo = False))
+
+    elif not resposta is None and resposta == 'sim':
+        ManualEngine.declare(InteressePag(tipo = True))
+
+#Pergunta sobre Rural
+def perguntaRural():
+    resposta = campoOpcao (
+        'Rural',
+        'Você tem interesse no programa de hospedagem rural?',
+        ['Sim', 'Não']
+    )
+
+    if not resposta is None and resposta == 'não':
+        ManualEngine.declare(InteresseRural(tipo = False))
+
+    elif not resposta is None and resposta == 'sim':
+        ManualEngine.declare(InteresseRural(tipo = True))
+
+#Pergunta sobre PAVI
+def perguntaPavi():
+    resposta = campoOpcao (
+        'Pavi',
+        'Você tem interesse no programa de atividade de vivência interdisciplinar?',
+        ['Sim', 'Não']
+    )
+
+    if not resposta is None and resposta == 'não':
+        ManualEngine.declare(InteressePavi(tipo = False))
+
+    elif not resposta is None and resposta == 'sim':
+        ManualEngine.declare(InteressePavi(tipo = True))
+
+#Pergunta sobre Cultura
+def perguntaCultura():
+    resposta = campoOpcao (
+        'Cultura',
+        'Você tem interesse no programa de incentivo à cultura?',
+        ['Sim', 'Não']
+    )
+
+    if not resposta is None and resposta == 'não':
+        ManualEngine.declare(InteresseCultura(tipo = False))
+
+    elif not resposta is None and resposta == 'sim':
+        ManualEngine.declare(InteresseCultura(tipo = True))
+
+#Pergunta sobre REMT
+def perguntaRemt():
+    resposta = campoOpcao (
+        'Remt',
+        'Você tem interesse no Regime Especial de Movimentação Temporária (REMT)?',
+        ['Sim', 'Não']
+    )
+
+    if not resposta is None and resposta == 'não':
+        ManualEngine.declare(InteresseRemt(tipo = False))
+
+    elif not resposta is None and resposta == 'sim':
+        ManualEngine.declare(InteresseRemt(tipo = True))
+
+#Pergunta sobre Acessibilidade
+def perguntaAcessibilidade():
+    resposta = campoOpcao (
+        'Acessibilidade',
+        'Você tem interesse nos serviços de acessibilidade da UFAPE?',
+        ['Sim', 'Não']
+    )
+
+    if not resposta is None and resposta == 'não':
+        ManualEngine.declare(InteresseAcessibilidade(tipo = False))
+
+    elif not resposta is None and resposta == 'sim':
+        ManualEngine.declare(InteresseAcessibilidade(tipo = True))
+
+
