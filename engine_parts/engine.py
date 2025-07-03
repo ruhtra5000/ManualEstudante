@@ -493,3 +493,54 @@ class Manual(KnowledgeEngine):
         })
 
         self.gerarExplicacao()
+
+
+    #    ______    _ _                              _                           
+    #   |  ____|  | | |                       /\   | |                          
+    #   | |__ __ _| | |_ __ _ ___    ___     /  \  | |__   ___  _ __   ___  ___ 
+    #   |  __/ _` | | __/ _` / __|  / _ \   / /\ \ | '_ \ / _ \| '_ \ / _ \/ __|
+    #   | | | (_| | | || (_| \__ \ |  __/  / ____ \| |_) | (_) | | | | (_) \__ \
+    #   |_|  \__,_|_|\__\__,_|___/  \___| /_/    \_\_.__/ \___/|_| |_|\___/|___/
+    #                                                                           
+    #                                                                           
+    
+    # Regra de página inicial para a aba "Faltas e Abonos"
+    @Rule(FaltasAbonosEntrada(txt = 'abono'))
+    def abono(self):
+        st.session_state['carregarPagina'] = 'abono'
+        
+    # Regra caso o aluno esteja sob exercício militar
+    @Rule(
+        FaltasAbonosEntrada(txt = 'abono'),
+        ExercicioMilitar(tipo = True)
+    )
+    def abonoExercicioMilitar(self):
+        st.session_state['carregarPagina'] = 'abonoExercicioMilitar'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'abonoExercicioMilitar',
+            'premissas': ['Aba faltas e abonos', 'Busca por \"abono\"', 'Está sob exercício militar'],
+            'fonte': 'Pág. 29 do Manual do Estudante 2023. Lei nº 4.375/64',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    # Regra caso o aluno não esteja sob exercício militar
+    @Rule(
+        FaltasAbonosEntrada(txt = 'abono'),
+        ExercicioMilitar(tipo = False)
+    )
+    def abonoInvalido(self):
+        st.session_state['carregarPagina'] = 'abonoInvalido'
+        
+        self.explicacao.append({   
+            'nome': 'abonoInvalido',
+            'premissas': ['Aba faltas e abonos', 'Busca por \"abono\"', 'Não está sob exercício militar'],
+            'fonte': 'Pág. 29 do Manual do Estudante 2023. Lei nº 4.375/64',
+            'Resolulção': '',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
