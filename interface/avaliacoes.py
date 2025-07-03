@@ -13,7 +13,7 @@ def avaliacoesInicial():
     entrada = campoTexto(
         chave="avaliacoes_geral",
         texto_label="Deseja saber algo mais sobre avaliações, notas ou revisão de provas?",
-        texto_placeholder="Ex.: revisão, frequência, média"
+        texto_placeholder="Ex.: revisão, notas"
     )
 
     if entrada:
@@ -32,9 +32,9 @@ def avaliacoesInicial():
             revisaoPrazoExpirado()
 
         # Casos de notas
-        case 'perguntarNotas': # NOVO: Para iniciar o fluxo de perguntas sobre as notas
+        case 'perguntarNotas': # Para iniciar o fluxo de perguntas sobre as notas
             perguntarNotas()
-        case 'exibirResultadoFinal': # NOVO: Para exibir o resultado após as notas
+        case 'exibirResultadoFinal': # Para exibir o resultado após as notas
             exibirResultadoFinal()
         
 

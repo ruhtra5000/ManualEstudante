@@ -15,7 +15,7 @@ def faltasAbonosInicial():
     entrada = campoTexto(
         chave="faltas_abonos_geral",
         texto_label="Deseja saber algo mais sobre faltas, abonos ou justificativas?",
-        texto_placeholder="Ex.: faltas, abono, justificativa"
+        texto_placeholder="Ex.: faltas, abono"
     )
 
     if entrada:
