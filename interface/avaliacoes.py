@@ -8,6 +8,13 @@ def avaliacoesInicial():
     st.header("Avaliações e Notas")
     st.write("Aqui você encontra informações sobre seu rendimento acadêmico, avaliações, e o processo de revisão de notas.")
 
+    st.markdown("- A cada semestre, os alunos devem realizar duas verificações de aprendizagem.")
+    st.markdown("- Para ser aprovado por média, o aluno deve obter média 7,0.")
+    st.markdown("- Há a opção de fazer uma terceira verificação, e quem optar por ela terá a menor nota descartada.")
+    st.markdown("- A 3ª Verificação também tem caráter de segunda chamada para quem faltou à 1ª ou 2ª verificação.")
+    st.markdown("- Caso não seja aprovado por média, mas obtenha no mínimo 3,0, o aluno poderá realizar um exame final.")
+    st.markdown("- A aprovação final, considerando a média nas provas e a nota do exame final, ocorre com média de 5,0.")
+
     # Campo de texto para o usuário digitar a dúvida inicial
     entrada = campoTexto(
         chave="avaliacoes_geral",
@@ -115,9 +122,9 @@ def perguntarNotas():
 # Interface para exibir o resultado da elegibilidade para o Exame Final
 def exibirResultadoFinal():
     st.subheader("Resultado da Elegibilidade para Exame Final")
-    # O conteúdo desta função será definido pelas regras no engine.py,
-    # que irão escrever a mensagem específica no Streamlit.
     st.info(st.session_state.get('explicacao'))
+
+    st.write    
     
     if st.button("Reiniciar Verificação de Notas"):
         for fact_id, fact in ManualEngine.facts.items():

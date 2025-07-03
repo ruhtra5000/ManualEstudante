@@ -458,39 +458,6 @@ class Manual(KnowledgeEngine):
         st.write("O cancelamento de registro acadêmico é o desligamento efetivo da UFAPE.")'''
         #Falta adicionar a explicabilidade 
 
-
-    #                      _ _            /\/|                    _   _       _            
-    #       /\            | (_)          |/\/                    | \ | |     | |           
-    #      /  \__   ____ _| |_  __ _  ___ ___   ___  ___    ___  |  \| | ___ | |_ __ _ ___ 
-    #     / /\ \ \ / / _` | | |/ _` |/ __/ _ \ / _ \/ __|  / _ \ | . ` |/ _ \| __/ _` / __|
-    #    / ____ \ V / (_| | | | (_| | (_| (_) |  __/\__ \ |  __/ | |\  | (_) | || (_| \__ \
-    #   /_/    \_\_/ \__,_|_|_|\__,_|\___\___/ \___||___/  \___| |_| \_|\___/ \__\__,_|___/
-    #                                 )_)                                                  
-    #                                                                                      
-
-    # Regra de página inicial para a aba "Avaliações e Notas"
-    @Rule(AvaliacaoEntrada(txt = "revisão"))
-    def revisaoProva(self):
-        st.session_state['carregarPagina'] = 'revisaoProva'
-
-    # Regra para verificar se o prazo de revisão está OK
-    @Rule(
-        AvaliacaoEntrada(txt = "revisão"),
-        PrazoRevisaoOK(tipo = True)
-    )
-    def revisaoPrazoOK(self):
-        st.session_state['carregarPagina'] = 'revisaoPrazoOK'
-
-        #Explicabilidade
-        self.explicacao.append({
-            'nome': 'revisaoProva',
-            'premissas': ['Aba avaliações e notas', 'Busca por \"revisão\"','Prazo de revisão OK'],
-            'fonte': 'Pág. 28 do Manual do Estudante 2023',
-            'tempo': len(self.explicacao) + 1
-        })
-
-        self.gerarExplicacao()
-        
     @Rule(CancelamentoEntrada(txt = "abandono"))
     def abandonoCurso(self):
         st.session_state['carregarPagina'] = 'abandonoCurso'
@@ -552,24 +519,6 @@ class Manual(KnowledgeEngine):
 
         self.gerarExplicacao()          
 
-    # Regra para verificar se o prazo de revisão expirou
-    @Rule(
-        AvaliacaoEntrada(txt = "revisão"),
-        PrazoRevisaoOK(tipo = False)
-    )
-    def revisaoPrazoExpirado(self):
-        st.session_state['carregarPagina'] = 'revisaoPrazoExpirado'
-
-        #Explicabilidade
-        self.explicacao.append({
-            'nome': 'revisaoPrazoExpirado',
-            'premissas': ['Aba avaliações e notas', 'Busca por \"revisão\"','Prazo de revisão expirado'],
-            'fonte': 'Pág. 28 do Manual do Estudante 2023',
-            'tempo': len(self.explicacao) + 1
-        })
-
-        self.gerarExplicacao()
-        
     @Rule(
         CancelamentoEntrada(txt = "desligamento"),
         ReprovacoesMesmaMateria(tipo = False),
@@ -592,95 +541,6 @@ class Manual(KnowledgeEngine):
 
         self.gerarExplicacao()
 
-    # Inicia o fluxo de verificação de notas para cálculo de média/exame final
-    @Rule(AS.av_entrada << AvaliacaoEntrada(txt = L("notas") | L("média") | L("media") | L("exame final") | L("exame")))
-    def iniciarVerificacaoNotas(self, av_entrada):
-        st.session_state['carregarPagina'] = 'perguntarNotas'
-        # Reseta flags de notas para iniciar um novo cálculo
-        st.session_state['nota1_informada'] = False
-        st.session_state['nota2_informada'] = False
-
-        self.explicacao.append({
-            'nome': 'iniciarVerificacaoNotas',
-            'premissas': ['Aba Avaliações e Notas', 'Busca por \'notas\', \'média\' ou \'exame\''],
-            'fonte': 'Pág. 27-28 do Manual do Estudante 2023',
-            'tempo': len(self.explicacao) + 1
-        })
-        self.gerarExplicacao()
-        self.retract(av_entrada) # Retrai a entrada inicial para não disparar novamente
-
-    # Calcula a média e determina a situação do aluno
-    @Rule(
-        AS.n1 << Nota1(valor=P(lambda x: True)), # Nota1 está presente
-        AS.n2 << Nota2(valor=P(lambda x: True))  # Nota2 está presente
-    )
-    def avaliarAprovacao(self, n1, n2):
-        media = (n1['valor'] + n2['valor']) / 2.0
-        
-        st.session_state['carregarPagina'] = 'exibirResultadoFinal' # Indica a UI a ser exibida
-
-        mensagem_resultado = ""
-        fonte_explicacao = 'Pág. 27-28 do Manual do Estudante 2023'
-
-        if media >= 7.0:
-            mensagem_resultado = f"Sua média é {media:.2f}. Você está **APROVADO(A) POR MÉDIA!**"
-            st.success(mensagem_resultado)
-            premissas_explicacao = ['Nota1 e Nota2 informadas', f'Média ({media:.2f}) >= 7.0']
-        elif media >= 3.0: # media < 7.0 && media >= 3.0
-            mensagem_resultado = f"Sua média é {media:.2f}. Você está **ELEGÍVEL PARA EXAME FINAL!** Você será aprovado(a) se obtiver média 5.0 (considerando a média das provas e a nota do exame final)."
-            st.warning(mensagem_resultado)
-            premissas_explicacao = ['Nota1 e Nota2 informadas', f'Média ({media:.2f}) >= 3.0 e < 7.0']
-        else: # media < 3.0
-            mensagem_resultado = f"Sua média é {media:.2f}. Você está **REPROVADO(A) SEM DIREITO A EXAME FINAL.**"
-            st.error(mensagem_resultado)
-            premissas_explicacao = ['Nota1 e Nota2 informadas', f'Média ({media:.2f}) < 3.0']
-
-        self.explicacao.append({
-            'nome': 'avaliarAprovacao',
-            'premissas': premissas_explicacao,
-            'fonte': fonte_explicacao,
-            'tempo': len(self.explicacao) + 1
-        })
-        self.gerarExplicacao()
-
-        # Retrai as notas após o cálculo para limpar a base de conhecimento e permitir um novo cálculo se o usuário informar novas notas.
-        self.retract(n1)
-        self.retract(n2)
-        
-        # Reseta as flags de session_state aqui também para garantir que a UI se reinicie para novas entradas de notas.
-        st.session_state['nota1_informada'] = False
-        st.session_state['nota2_informada'] = False
-        
-    #    ______    _ _                              _                           
-    #   |  ____|  | | |                       /\   | |                          
-    #   | |__ __ _| | |_ __ _ ___    ___     /  \  | |__   ___  _ __   ___  ___ 
-    #   |  __/ _` | | __/ _` / __|  / _ \   / /\ \ | '_ \ / _ \| '_ \ / _ \/ __|
-    #   | | | (_| | | || (_| \__ \ |  __/  / ____ \| |_) | (_) | | | | (_) \__ \
-    #   |_|  \__,_|_|\__\__,_|___/  \___| /_/    \_\_.__/ \___/|_| |_|\___/|___/
-    #                                                                           
-                                                             
-    # Caso de busca por "abono"
-    # e pergunta se o usuário está sob exercício militar
-    @Rule(FaltasAbonosEntrada(txt = 'abono'))
-    def abono(self):
-        st.session_state['carregarPagina'] = 'abono'
-        
-    # Caso o aluno esteja sob exercício militar
-    @Rule(
-        FaltasAbonosEntrada(txt = 'abono'),
-        ExercicioMilitar(tipo = True)
-    )
-    def abonoExercicioMilitar(self):
-        st.session_state['carregarPagina'] = 'abonoExercicioMilitar'
-
-        #Explicabilidade
-        self.explicacao.append({
-            'nome': 'abonoExercicioMilitar',
-            'premissas': ['Aba faltas e abonos', 'Busca por \"abono\"', 'Está sob exercício militar'],
-            'fonte': 'Pág. 29 do Manual do Estudante 2023. Lei nº 4.375/64',
-            'tempo': len(self.explicacao) + 1
-        })
-        
     @Rule(CancelamentoEntrada(txt = "penalidade"))
     def desligamentoPorPenalidadeDisciplinar(self):
         st.session_state['carregarPagina'] = 'penalidadeDisciplinar'
@@ -774,6 +634,147 @@ class Manual(KnowledgeEngine):
 
         self.gerarExplicacao()
 
+    #                      _ _            /\/|                    _   _       _            
+    #       /\            | (_)          |/\/                    | \ | |     | |           
+    #      /  \__   ____ _| |_  __ _  ___ ___   ___  ___    ___  |  \| | ___ | |_ __ _ ___ 
+    #     / /\ \ \ / / _` | | |/ _` |/ __/ _ \ / _ \/ __|  / _ \ | . ` |/ _ \| __/ _` / __|
+    #    / ____ \ V / (_| | | | (_| | (_| (_) |  __/\__ \ |  __/ | |\  | (_) | || (_| \__ \
+    #   /_/    \_\_/ \__,_|_|_|\__,_|\___\___/ \___||___/  \___| |_| \_|\___/ \__\__,_|___/
+    #                                 )_)                                                  
+    #                                                                                      
+
+    # Regra de página inicial para a aba "Avaliações e Notas"
+    @Rule(AvaliacaoEntrada(txt = "revisão"))
+    def revisaoProva(self):
+        st.session_state['carregarPagina'] = 'revisaoProva'
+
+    # Regra para verificar se o prazo de revisão está OK
+    @Rule(
+        AvaliacaoEntrada(txt = "revisão"),
+        PrazoRevisaoOK(tipo = True)
+    )
+    def revisaoPrazoOK(self):
+        st.session_state['carregarPagina'] = 'revisaoPrazoOK'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'revisaoProva',
+            'premissas': ['Aba avaliações e notas', 'Busca por \"revisão\"','Prazo de revisão OK'],
+            'fonte': 'Pág. 28 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    # Regra para verificar se o prazo de revisão expirou
+    @Rule(
+        AvaliacaoEntrada(txt = "revisão"),
+        PrazoRevisaoOK(tipo = False)
+    )
+    def revisaoPrazoExpirado(self):
+        st.session_state['carregarPagina'] = 'revisaoPrazoExpirado'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'revisaoPrazoExpirado',
+            'premissas': ['Aba avaliações e notas', 'Busca por \"revisão\"','Prazo de revisão expirado'],
+            'fonte': 'Pág. 28 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+   
+    # Inicia o fluxo de verificação de notas para cálculo de média/exame final
+    @Rule(AS.av_entrada << AvaliacaoEntrada(txt = L("notas")))
+    def iniciarVerificacaoNotas(self, av_entrada):
+        st.session_state['carregarPagina'] = 'perguntarNotas'
+        # Reseta flags de notas para iniciar um novo cálculo
+        st.session_state['nota1_informada'] = False
+        st.session_state['nota2_informada'] = False
+
+        self.explicacao.append({
+            'nome': 'iniciarVerificacaoNotas',
+            'premissas': ['Aba Avaliações e Notas', 'Busca por \'notas\', \'média\' ou \'exame\''],
+            'fonte': 'Pág. 27-28 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+        self.gerarExplicacao()
+        self.retract(av_entrada) # Retrai a entrada inicial para não disparar novamente
+
+    # Calcula a média e determina a situação do aluno
+    @Rule(
+        AS.n1 << Nota1(valor=P(lambda x: True)), # Nota1 está presente
+        AS.n2 << Nota2(valor=P(lambda x: True))  # Nota2 está presente
+    )
+    def avaliarAprovacao(self, n1, n2):
+        media = (n1['valor'] + n2['valor']) / 2.0
+        
+        st.session_state['carregarPagina'] = 'exibirResultadoFinal'
+
+        mensagem_resultado = ""
+        fonte_explicacao = 'Pág. 27-28 do Manual do Estudante 2023'
+
+        if media >= 7.0:
+            mensagem_resultado = f"Sua média é {media:.2f}. Você está **APROVADO(A) POR MÉDIA!**"
+            st.success(mensagem_resultado)
+            premissas_explicacao = ['Nota1 e Nota2 informadas', f'Média ({media:.2f}) >= 7.0']
+        elif media >= 3.0: # media < 7.0 && media >= 3.0
+            mensagem_resultado = f"Sua média é {media:.2f}. Você está **ELEGÍVEL PARA EXAME FINAL!** Você será aprovado(a) se obtiver média 5.0 (considerando a média das provas e a nota do exame final)."
+            st.warning(mensagem_resultado)
+            premissas_explicacao = ['Nota1 e Nota2 informadas', f'Média ({media:.2f}) >= 3.0 e < 7.0']
+        else: # media < 3.0
+            mensagem_resultado = f"Sua média é {media:.2f}. Você está **REPROVADO(A) SEM DIREITO A EXAME FINAL.**"
+            st.error(mensagem_resultado)
+            premissas_explicacao = ['Nota1 e Nota2 informadas', f'Média ({media:.2f}) < 3.0']
+
+        self.explicacao.append({
+            'nome': 'avaliarAprovacao',
+            'premissas': premissas_explicacao,
+            'fonte': fonte_explicacao,
+            'tempo': len(self.explicacao) + 1
+        })
+        self.gerarExplicacao()
+
+        # Retrai as notas após o cálculo para limpar a base de conhecimento e permitir um novo cálculo se o usuário informar novas notas.
+        self.retract(n1)
+        self.retract(n2)
+        
+        # Reseta as flags de session_state aqui também para garantir que a UI se reinicie para novas entradas de notas.
+        st.session_state['nota1_informada'] = False
+        st.session_state['nota2_informada'] = False
+      
+    #    ______    _ _                              _                           
+    #   |  ____|  | | |                       /\   | |                          
+    #   | |__ __ _| | |_ __ _ ___    ___     /  \  | |__   ___  _ __   ___  ___ 
+    #   |  __/ _` | | __/ _` / __|  / _ \   / /\ \ | '_ \ / _ \| '_ \ / _ \/ __|
+    #   | | | (_| | | || (_| \__ \ |  __/  / ____ \| |_) | (_) | | | | (_) \__ \
+    #   |_|  \__,_|_|\__\__,_|___/  \___| /_/    \_\_.__/ \___/|_| |_|\___/|___/
+    #                                                                           
+                                                             
+    # Caso de busca por "abono"
+    # e pergunta se o usuário está sob exercício militar
+    @Rule(FaltasAbonosEntrada(txt = 'abono'))
+    def abono(self):
+        st.session_state['carregarPagina'] = 'abono'
+        
+    # Caso o aluno esteja sob exercício militar
+    @Rule(
+        FaltasAbonosEntrada(txt = 'abono'),
+        ExercicioMilitar(tipo = True)
+    )
+    def abonoExercicioMilitar(self):
+        st.session_state['carregarPagina'] = 'abonoExercicioMilitar'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'abonoExercicioMilitar',
+            'premissas': ['Aba faltas e abonos', 'Busca por \"abono\"', 'Está sob exercício militar'],
+            'fonte': 'Pág. 29 do Manual do Estudante 2023. Lei nº 4.375/64',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+        
     # Regra caso o aluno não esteja sob exercício militar
     @Rule(
         FaltasAbonosEntrada(txt = 'abono'),
@@ -788,31 +789,9 @@ class Manual(KnowledgeEngine):
             'fonte': 'Pág. 29 do Manual do Estudante 2023. Lei nº 4.375/64',
             'tempo': len(self.explicacao) + 1
         })
-    
-
-    #     _____      _            /\/|             _                              
-    #    / ____|    | |          |/\/             | |                             
-    #   | |     ___ | | __ _  ___ __ _  ___     __| | ___    __ _ _ __ __ _ _   _ 
-    #   | |    / _ \| |/ _` |/ __/ _` |/ _ \   / _` |/ _ \  / _` | '__/ _` | | | |
-    #   | |___| (_) | | (_| | (_| (_| | (_) | | (_| |  __/ | (_| | | | (_| | |_| |
-    #    \_____\___/|_|\__,_|\___\__,_|\___/   \__,_|\___|  \__, |_|  \__,_|\__,_|
-    #                         )_)                            __/ |                
-    #                                                       |___/    
-
-    @Rule(ColacaoGrauEntrada(txt = "colação em separado"))
-    def colacaoEmSeparado(self):
-        st.session_state['carregarPagina'] = 'colacaoEmSeparado'
-
-        #Explicabilidade
-        self.explicacao.append({
-            'nome': 'colacaoEmSeparado',
-            'premissas': ['Aba colação de grau', 'Busca por \"colação em separado\"'],
-            'fonte': 'Pág. 31 do Manual do Estudante 2023',
-            'tempo': len(self.explicacao) + 1
-        })
 
         self.gerarExplicacao()
-
+    
     # Caso de busca por "faltas"
     # e pergunta se o usuário é gestante
     @Rule(FaltasAbonosEntrada(txt = 'faltas'))
@@ -832,6 +811,77 @@ class Manual(KnowledgeEngine):
             'nome': 'tratamentoGestante',
             'premissas': ['Aba faltas e abonos', 'Busca por \"faltas\"', 'É gestante'],
             'fonte': 'Pág. 28 do Manual do Estudante 2023. LEI Nº 6202/75.',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    # Tratamento de faltas caso o usuário tenha incapacidade relativa
+    @Rule(
+        FaltasAbonosEntrada(txt = 'faltas'),
+        Gestante(tipo = False),
+        IncapacidadeRelativa(tipo = True)
+        )
+    def tratamentoIncapacitadoRelativo(self):
+        st.session_state['carregarPagina'] = 'tratamentoIncapacitadoRelativo'
+
+        self.explicacao.append({
+            'nome': 'tratamentoIncapacitadoRelativo',
+            'premissas': ['Aba faltas e abonos', 'Busca por \"faltas\"', 'Não é gestante', 'Tem incapacidade relativa'],
+            'fonte': 'Pág. 28 do Manual do Estudante 2023. DECRETO-LEI Nº 1044/69.',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+  
+      # Pergunta se o usuário tem alguma incapacidade relativa ou temporária    
+    
+    # Pergunta se o usuário tem alguma incapacidade relativa ou temporária
+    @Rule(
+        FaltasAbonosEntrada(txt = 'faltas'),
+        Gestante(tipo = False)
+    )
+    def perguntaIncapacidadeRelativa(self):
+        st.session_state['carregarPagina'] = 'perguntaIncapacidadeRelativa'
+
+    # Tratamento caso o usuário não seja gestante nem incapacitado relativo
+    @Rule(
+        FaltasAbonosEntrada(txt = 'faltas'),
+        Gestante(tipo = False),
+        IncapacidadeRelativa(tipo = False)
+    )
+    def nenhumTratamentoFaltas(self):
+        st.session_state['carregarPagina'] = 'nenhumTratamentoFaltas'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'nenhumTratamentoFaltas',
+            'premissas': ['Aba faltas e abonos', 'Busca por \"faltas\"', 'Não é gestante', 'Não tem incapacidade relativa'],
+            'fonte': 'Pág. 28 do Manual do Estudante 2023. LEI Nº 6202/75. DECRETO-LEI Nº 1044/69.',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+  
+
+    #     _____      _            /\/|             _                              
+    #    / ____|    | |          |/\/             | |                             
+    #   | |     ___ | | __ _  ___ __ _  ___     __| | ___    __ _ _ __ __ _ _   _ 
+    #   | |    / _ \| |/ _` |/ __/ _` |/ _ \   / _` |/ _ \  / _` | '__/ _` | | | |
+    #   | |___| (_) | | (_| | (_| (_| | (_) | | (_| |  __/ | (_| | | | (_| | |_| |
+    #    \_____\___/|_|\__,_|\___\__,_|\___/   \__,_|\___|  \__, |_|  \__,_|\__,_|
+    #                         )_)                            __/ |                
+    #                                                       |___/    
+
+    @Rule(ColacaoGrauEntrada(txt = "colação em separado"))
+    def colacaoEmSeparado(self):
+        st.session_state['carregarPagina'] = 'colacaoEmSeparado'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'colacaoEmSeparado',
+            'premissas': ['Aba colação de grau', 'Busca por \"colação em separado\"'],
+            'fonte': 'Pág. 31 do Manual do Estudante 2023',
             'tempo': len(self.explicacao) + 1
         })
 
@@ -873,25 +923,7 @@ class Manual(KnowledgeEngine):
         })
 
         self.gerarExplicacao()
-
-    # Tratamento de faltas caso o usuário tenha incapacidade relativa
-    @Rule(
-        FaltasAbonosEntrada(txt = 'faltas'),
-        Gestante(tipo = False),
-        IncapacidadeRelativa(tipo = True)
-        )
-    def tratamentoIncapacitadoRelativo(self):
-        st.session_state['carregarPagina'] = 'tratamentoIncapacitadoRelativo'
-
-        self.explicacao.append({
-            'nome': 'tratamentoIncapacitadoRelativo',
-            'premissas': ['Aba faltas e abonos', 'Busca por \"faltas\"', 'Não é gestante', 'Tem incapacidade relativa'],
-            'fonte': 'Pág. 28 do Manual do Estudante 2023. DECRETO-LEI Nº 1044/69.',
-            'tempo': len(self.explicacao) + 1
-        })
-
-        self.gerarExplicacao()
-        
+      
     @Rule(EstagioEntrada(txt = "estágio não obrigatório"))
     def estagioNaoObrigatorio(self):
         st.session_state['carregarPagina'] = 'estagioNaoObrigatorio'
@@ -905,34 +937,7 @@ class Manual(KnowledgeEngine):
         })
 
         self.gerarExplicacao()
-
-    # Pergunta se o usuário tem alguma incapacidade relativa ou temporária    
-    @Rule(
-        FaltasAbonosEntrada(txt = 'faltas'),
-        Gestante(tipo = False)
-    )
-    def perguntaIncapacidadeRelativa(self):
-        st.session_state['carregarPagina'] = 'perguntaIncapacidadeRelativa'
-
-    # Tratamento caso o usuário não seja gestante nem incapacitado relativo
-    @Rule(
-        FaltasAbonosEntrada(txt = 'faltas'),
-        Gestante(tipo = False),
-        IncapacidadeRelativa(tipo = False)
-    )
-    def nenhumTratamentoFaltas(self):
-        st.session_state['carregarPagina'] = 'nenhumTratamentoFaltas'
-
-        #Explicabilidade
-        self.explicacao.append({
-            'nome': 'nenhumTratamentoFaltas',
-            'premissas': ['Aba faltas e abonos', 'Busca por \"faltas\"', 'Não é gestante', 'Não tem incapacidade relativa'],
-            'fonte': 'Pág. 28 do Manual do Estudante 2023. LEI Nº 6202/75. DECRETO-LEI Nº 1044/69.',
-            'tempo': len(self.explicacao) + 1
-        })
-
-        self.gerarExplicacao()
-        
+      
     @Rule(EstagioEntrada(txt = "requisitos"))
     def estagioRequisitos(self):
         st.session_state['carregarPagina'] = 'estagioRequisitos'
@@ -970,28 +975,6 @@ class Manual(KnowledgeEngine):
 
         self.gerarExplicacao()
 
-
-#    _____  ______ _____ _    _ _____   _____  ____   _____            _____  __  __ 
-#   |  __ \|  ____/ ____| |  | |  __ \ / ____|/ __ \ / ____|     /\   |  __ \|  \/  |
-#   | |__) | |__ | |    | |  | | |__) | (___ | |  | | (___      /  \  | |  | | \  / |
-#   |  _  /|  __|| |    | |  | |  _  / \___ \| |  | |\___ \    / /\ \ | |  | | |\/| |
-#   | | \ \| |___| |____| |__| | | \ \ ____) | |__| |____) |  / ____ \| |__| | |  | |
-#   |_|  \_\______\_____|\____/|_|  \_\_____/ \____/|_____/  /_/    \_\_____/|_|  |_|
-#                                                                                                                                                                       
-
-    @Rule(RecursosAdmEntrada(txt = "reapreciação"))
-    def reapreciacao(self):
-        st.session_state['carregarPagina'] = 'reapreciação'
-
-        self.explicacao.append({
-            'nome': 'reapreciacao',
-            'premissas': ['Aba recursos administrativos', 'Busca por \"reapreciação\"'],
-            'fonte': 'Pág. 30 do Manual do Estudante 2023',
-            'tempo': len(self.explicacao) + 1
-        })
-
-        self.gerarExplicacao()
-    
     @Rule(ApoioEstudantilEntrada(txt = "pet"))
     def apoioEstudantilPet(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilPet'
@@ -1033,19 +1016,7 @@ class Manual(KnowledgeEngine):
         })
 
         self.gerarExplicacao()
-
-    @Rule(RecursosAdmEntrada(txt = "recurso"))
-    def recurso(self):
-        st.session_state['carregarPagina'] = 'recurso'
-
-        self.explicacao.append({
-            'nome': 'recurso',
-            'premissas': ['Aba recursos administrativos', 'Busca por \"recurso\"'],
-            'fonte': 'Pág. 30 do Manual do Estudante 2023',
-            'tempo': len(self.explicacao) + 1
-        })
-
-        self.gerarExplicacao()
+    
     @Rule(ApoioEstudantilEntrada(txt = "pibid"))
     def apoioEstudantilPibid(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilPibid'
@@ -1237,6 +1208,42 @@ class Manual(KnowledgeEngine):
             'nome': 'apoioEstudantilAcessibilidade',
             'premissas': ['Aba Apoio Estudantil', 'Busca por \"acessibilidade\"'],
             'fonte': 'Pág. 36 e 37 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    #    _____  ______ _____ _    _ _____   _____  ____   _____            _____  __  __ 
+    #   |  __ \|  ____/ ____| |  | |  __ \ / ____|/ __ \ / ____|     /\   |  __ \|  \/  |
+    #   | |__) | |__ | |    | |  | | |__) | (___ | |  | | (___      /  \  | |  | | \  / |
+    #   |  _  /|  __|| |    | |  | |  _  / \___ \| |  | |\___ \    / /\ \ | |  | | |\/| |
+    #   | | \ \| |___| |____| |__| | | \ \ ____) | |__| |____) |  / ____ \| |__| | |  | |
+    #   |_|  \_\______\_____|\____/|_|  \_\_____/ \____/|_____/  /_/    \_\_____/|_|  |_|
+    #                                                                                                                                                                       
+
+    # Busca por "reapreciação" na aba de recursos administrativos
+    @Rule(RecursosAdmEntrada(txt = "reapreciação"))
+    def reapreciacao(self):
+        st.session_state['carregarPagina'] = 'reapreciação'
+
+        self.explicacao.append({
+            'nome': 'reapreciacao',
+            'premissas': ['Aba recursos administrativos', 'Busca por \"reapreciação\"'],
+            'fonte': 'Pág. 30 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+    
+    # Busca por "recurso" na aba de recursos administrativos
+    @Rule(RecursosAdmEntrada(txt = "recurso"))
+    def recurso(self):
+        st.session_state['carregarPagina'] = 'recurso'
+
+        self.explicacao.append({
+            'nome': 'recurso',
+            'premissas': ['Aba recursos administrativos', 'Busca por \"recurso\"'],
+            'fonte': 'Pág. 30 do Manual do Estudante 2023',
             'tempo': len(self.explicacao) + 1
         })
 
