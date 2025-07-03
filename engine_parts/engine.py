@@ -452,14 +452,183 @@ class Manual(KnowledgeEngine):
     #   | |___| (_| | | | | (_|  __/ | (_| | | | | | |  __/ | | | || (_) | | (_| |  __/  \ V /| | | | | (__| |_| | | (_) |
     #    \_____\__,_|_| |_|\___\___|_|\__,_|_| |_| |_|\___|_| |_|\__\___/   \__,_|\___|   \_/ |_|_| |_|\___|\__,_|_|\___/ 
     #                                                                                                                         
-    @Rule(CancelamentoEntrada(txt = "lorem ipsum"))
-    def cancelPadrao(self):
-        '''st.header("Cancelamento de vínculo")
-        st.write("O cancelamento de registro acadêmico é o desligamento efetivo da UFAPE.")'''
-        #Falta adicionar a explicabilidade 
+    @Rule(CancelamentoEntrada(txt = "abandono"))
+    def abandonoCurso(self):
+        st.session_state['carregarPagina'] = 'abandonoCurso'
+        
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'abandonoCurso',
+            'premissas': ['Aba Cancel. de Vinculo', 'Busca por \"abandono\"'],
+            'fonte': 'Pág. 26 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
 
+        self.gerarExplicacao()
+    
+    @Rule(
+        CancelamentoEntrada(txt = "desligamento"),
+        ~ReprovacoesMesmaMateria()
+    )
+    def desligamentoVinculoPergunta1(self):
+        st.session_state['carregarPagina'] = 'perguntaReprovacao'
 
-    #     _____      _            /\/|             _                              
+    @Rule(
+        CancelamentoEntrada(txt = "desligamento"),
+        ReprovacoesMesmaMateria(tipo = False),
+        ~TempoRestanteCurso()
+    )
+    def desligamentoVinculoPergunta2(self):
+        st.session_state['carregarPagina'] = 'perguntaTempoRestante'
+
+    @Rule(
+        CancelamentoEntrada(txt = "desligamento"),
+        TempoRestanteCurso(tipo = False),
+        ~Trancamentos()
+    )
+    def desligamentoVinculoPergunta3(self):
+        st.session_state['carregarPagina'] = 'perguntaTrancamentos'
+
+    @Rule(
+        CancelamentoEntrada(txt = "desligamento"),
+        OR(
+            ReprovacoesMesmaMateria(tipo = True),
+            AND(
+                TempoRestanteCurso(tipo = False),
+                Trancamentos(valor = 4)
+            )
+        )
+    )
+    def desligamentoVinculo(self):
+        st.session_state['carregarPagina'] = 'desligamentoVinculo'
+        
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'desligamentoVinculo',
+            'premissas': ['Aba Cancel. de Vinculo', 'Busca por \"desligamento\"', 'Já reprovou 4 vezes numa mesma matéria, ' + 
+                          'ou já esgotou os trancamentos e não tem mais tempo para finalizar o curso'],
+            'fonte': 'Pág. 26 do Manual do Estudante 2023, e Resolução Nº 154/2001 CEPE/UFRPE',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    @Rule(
+        CancelamentoEntrada(txt = "desligamento"),
+        ReprovacoesMesmaMateria(tipo = False),
+        OR(
+            TempoRestanteCurso(tipo = True),
+            Trancamentos(valor = P(lambda v: v < 4))
+        )
+    )
+    def desligamentoVinculoNegativo(self):
+        st.session_state['carregarPagina'] = 'desligamentoVinculoNegativo'
+        
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'desligamentoVinculoNegativo',
+            'premissas': ['Aba Cancel. de Vinculo', 'Busca por \"desligamento\"', 'Não reprovou 4 vezes numa mesma matéria, e ' + 
+                          'não esgotou os trancamentos ou ainda tem mais tempo para finalizar o curso'],
+            'fonte': 'Pág. 26 do Manual do Estudante 2023, e Resolução Nº 154/2001 CEPE/UFRPE',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    @Rule(CancelamentoEntrada(txt = "penalidade"))
+    def desligamentoPorPenalidadeDisciplinar(self):
+        st.session_state['carregarPagina'] = 'penalidadeDisciplinar'
+        
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'desligamentoPorPenalidadeDisciplinar',
+            'premissas': ['Aba Cancel. de Vinculo', 'Busca por \"penalidade\"'],
+            'fonte': 'Pág. 26 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    @Rule(CancelamentoEntrada(txt = "transferencia"))
+    def desligamentoPorTransferencia(self):
+        st.session_state['carregarPagina'] = 'transferencia'
+        
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'desligamentoPorTransferencia',
+            'premissas': ['Aba Cancel. de Vinculo', 'Busca por \"transferencia\"'],
+            'fonte': 'Pág. 26-27 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    @Rule(
+        CancelamentoEntrada(txt = 'reintegracao'),
+        ~AnosEvasao()
+    )
+    def reintegracaoPergunta1(self):
+        st.session_state['carregarPagina'] = 'perguntaAnosEvasao'
+
+    @Rule(
+        CancelamentoEntrada(txt = 'reintegracao'),
+        AnosEvasao(valor = P(lambda v: v <= 5)),
+        ~TempoRestanteCurso()
+    )
+    def reintegracaoPergunta2(self):
+        st.session_state['carregarPagina'] = 'perguntaTempoRestante'
+
+    @Rule(
+        CancelamentoEntrada(txt = 'reintegracao'),
+        TempoRestanteCurso(tipo = True),
+        ~ReprovacoesMesmaMateria()
+    )
+    def reintegracaoPergunta3(self):
+        st.session_state['carregarPagina'] = 'perguntaReprovacao'
+
+    @Rule(
+        CancelamentoEntrada(txt = 'reintegracao'),
+        AnosEvasao(valor = P(lambda v: v < 5)),
+        TempoRestanteCurso(tipo = True),
+        ReprovacoesMesmaMateria(tipo = False)
+    )
+    def reintegracao(self):
+        st.session_state['carregarPagina'] = 'reintegracao'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'reintegracao',
+            'premissas': ['Aba Cancel. de Vinculo', 'Busca por \"reintegracao\"', 'Menos que 5 anos de evasão', 
+                          'Consegue finalizar o curso no tempo restante', 'Não tem 4 reprovações numa mesma matéria'],
+            'fonte': 'Pág. 27 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    @Rule(
+        CancelamentoEntrada(txt = 'reintegracao'),
+        OR(
+            AnosEvasao(valor = P(lambda v: v >= 5)),
+            TempoRestanteCurso(tipo = False),
+            ReprovacoesMesmaMateria(tipo = True)
+        )
+    )
+    def reintegracaoNegativa(self):
+        st.session_state['carregarPagina'] = 'reintegracaoNegativa'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'reintegracaoNegativa',
+            'premissas': ['Aba Cancel. de Vinculo', 'Busca por \"reintegracao\"', '5 ou mais anos de evasão, ou ' +
+                          'não consegue finalizar o curso no tempo restante, ou tem 4 reprovações numa mesma matéria'],
+            'fonte': 'Pág. 27 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+       #     _____      _            /\/|             _                              
     #    / ____|    | |          |/\/             | |                             
     #   | |     ___ | | __ _  ___ __ _  ___     __| | ___    __ _ _ __ __ _ _   _ 
     #   | |    / _ \| |/ _` |/ __/ _` |/ _ \   / _` |/ _ \  / _` | '__/ _` | | | |
@@ -804,3 +973,4 @@ class Manual(KnowledgeEngine):
         })
 
         self.gerarExplicacao()
+

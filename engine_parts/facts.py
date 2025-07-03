@@ -11,20 +11,16 @@ class DisciplinaEntrada(Fact): #Entrada inicial
 class CancelamentoEntrada(Fact): #Entrada inicial
     txt: str
 
-<<<<<<< HEAD
-class ApoioEstudantilEntrada(Fact):
+class ApoioEstudantilEntrada(Fact): #Entrada inicial
     txt: str
 
-class ColacaoGrauEntrada(Fact):
+class ColacaoGrauEntrada(Fact): #Entrada inicial
     txt: str
 
-class EstagioEntrada(Fact):
+class EstagioEntrada(Fact): #Entrada inicial
     txt: str
 
-class Sexo(Fact):
-=======
 class Sexo(Fact): #Simboliza o sexo do usuário
->>>>>>> 1d3ddbcec9616abb0d9759c5ee4658135cc36703
     valor: str
 
 class Idade(Fact): #Idade do usuário
