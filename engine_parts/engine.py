@@ -502,7 +502,7 @@ class Manual(KnowledgeEngine):
     #   | | | (_| | | || (_| \__ \ |  __/  / ____ \| |_) | (_) | | | | (_) \__ \
     #   |_|  \__,_|_|\__\__,_|___/  \___| /_/    \_\_.__/ \___/|_| |_|\___/|___/
     #                                                                           
-    #                                                                          
+                                                             
     # Caso de busca por "abono"
     # e pergunta se o usuário está sob exercício militar
     @Rule(FaltasAbonosEntrada(txt = 'abono'))
@@ -563,7 +563,7 @@ class Manual(KnowledgeEngine):
         self.explicacao.append({
             'nome': 'tratamentoGestante',
             'premissas': ['Aba faltas e abonos', 'Busca por \"faltas\"', 'É gestante'],
-            'fonte': 'Pág. 9 do Manual do Estudante 2023. LEI Nº 6202/75.',
+            'fonte': 'Pág. 28 do Manual do Estudante 2023. LEI Nº 6202/75.',
             'tempo': len(self.explicacao) + 1
         })
 
@@ -581,7 +581,7 @@ class Manual(KnowledgeEngine):
         self.explicacao.append({
             'nome': 'tratamentoIncapacitadoRelativo',
             'premissas': ['Aba faltas e abonos', 'Busca por \"faltas\"', 'Não é gestante', 'Tem incapacidade relativa'],
-            'fonte': 'Pág. 9 do Manual do Estudante 2023. DECRETO-LEI Nº 1044/69.',
+            'fonte': 'Pág. 28 do Manual do Estudante 2023. DECRETO-LEI Nº 1044/69.',
             'tempo': len(self.explicacao) + 1
         })
 
@@ -608,7 +608,42 @@ class Manual(KnowledgeEngine):
         self.explicacao.append({
             'nome': 'nenhumTratamentoFaltas',
             'premissas': ['Aba faltas e abonos', 'Busca por \"faltas\"', 'Não é gestante', 'Não tem incapacidade relativa'],
-            'fonte': 'Pág. 9 do Manual do Estudante 2023. LEI Nº 6202/75. DECRETO-LEI Nº 1044/69.',
+            'fonte': 'Pág. 28 do Manual do Estudante 2023. LEI Nº 6202/75. DECRETO-LEI Nº 1044/69.',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+
+#    _____  ______ _____ _    _ _____   _____  ____   _____            _____  __  __ 
+#   |  __ \|  ____/ ____| |  | |  __ \ / ____|/ __ \ / ____|     /\   |  __ \|  \/  |
+#   | |__) | |__ | |    | |  | | |__) | (___ | |  | | (___      /  \  | |  | | \  / |
+#   |  _  /|  __|| |    | |  | |  _  / \___ \| |  | |\___ \    / /\ \ | |  | | |\/| |
+#   | | \ \| |___| |____| |__| | | \ \ ____) | |__| |____) |  / ____ \| |__| | |  | |
+#   |_|  \_\______\_____|\____/|_|  \_\_____/ \____/|_____/  /_/    \_\_____/|_|  |_|
+#                                                                                                                                                                       
+
+    @Rule(RecursosAdmEntrada(txt = "reapreciação"))
+    def reapreciacao(self):
+        st.session_state['carregarPagina'] = 'reapreciação'
+
+        self.explicacao.append({
+            'nome': 'reapreciacao',
+            'premissas': ['Aba recursos administrativos', 'Busca por \"reapreciação\"'],
+            'fonte': 'Pág. 30 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    @Rule(RecursosAdmEntrada(txt = "recurso"))
+    def recurso(self):
+        st.session_state['carregarPagina'] = 'recurso'
+
+        self.explicacao.append({
+            'nome': 'recurso',
+            'premissas': ['Aba recursos administrativos', 'Busca por \"recurso\"'],
+            'fonte': 'Pág. 30 do Manual do Estudante 2023',
             'tempo': len(self.explicacao) + 1
         })
 
