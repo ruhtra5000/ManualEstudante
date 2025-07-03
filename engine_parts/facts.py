@@ -23,6 +23,9 @@ class PeriodosCursados(Fact): #Armazena a qtde de períodos cursados (inclui o a
 class Trancamentos(Fact): #Qtde de trancamentos
     valor: int
 
+class AnosEvasao(Fact): #Qtde de anos desvinculado da UFAPE
+    valor: int
+
 class EdFisica(Fact): #Sinaliza se a disciplina que quer dispensar é Ed. Física
     tipo: bool
 
@@ -49,3 +52,6 @@ class TrancamentoForcaMaior(Fact): #Sinaliza se o motivo de trancamento de matri
 
 class TempoRestanteCurso(Fact): #Se o usuário é capaz de finalizar o curso
     tipo: bool                  #no tempo restante
+
+class ReprovacoesMesmaMateria(Fact): #Se o usuário ja reprovou 4 vezes numa mesma matéria
+    tipo: bool
