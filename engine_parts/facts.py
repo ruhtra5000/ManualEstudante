@@ -64,3 +64,6 @@ class ExercicioMilitar(Fact): #Se o usuário está em exercício militar
 
 class Gestante(Fact): #Se o usuário é gestante
     tipo: bool
+
+class RecursosAdmEntrada(Fact): #Entrada de recursos administrativos
+    txt: str
