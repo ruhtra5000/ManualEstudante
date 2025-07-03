@@ -56,3 +56,8 @@ class AvaliacaoEntrada(Fact): #Entrada de revisão de prova
 class PrazoRevisaoOK(Fact): #Se o prazo de revisão de prova está ok
     tipo: bool
 
+class FaltasAbonosEntrada(Fact): #Entrada de faltas e abonos
+    txt: str
+
+class ExercicioMilitar(Fact): #Se o usuário está em exercício militar
+    tipo: bool
