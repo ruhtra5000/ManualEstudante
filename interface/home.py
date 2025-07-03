@@ -9,6 +9,7 @@ from utils.constants import ABA_LABELS
 from interface.avaliacoes import avaliacoesInicial
 from interface.faltasAbonos import faltasAbonosInicial
 from interface.recursosAdm import recursosAdmInicial
+from interface.direitosDeveres import direitosDeveresInicial
 
 #Função de carregamento da pagina inicial da aplicação
 def homepageInicial():
@@ -39,6 +40,8 @@ def processarOpcao(opcao):
             faltasAbonosInicial()
         case "Recursos Adm.":
             recursosAdmInicial()
+        case "Direitos e Deveres":
+            direitosDeveresInicial()
 
             
     #No final, executa o motor — mas apenas se for a aba ativa
