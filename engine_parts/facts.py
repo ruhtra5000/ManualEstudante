@@ -49,3 +49,10 @@ class TrancamentoForcaMaior(Fact): #Sinaliza se o motivo de trancamento de matri
 
 class TempoRestanteCurso(Fact): #Se o usuário é capaz de finalizar o curso
     tipo: bool                  #no tempo restante
+
+class AvaliacaoEntrada(Fact): #Entrada de revisão de prova
+    txt: str
+
+class PrazoRevisaoOK(Fact): #Se o prazo de revisão de prova está ok
+    tipo: bool
+
