@@ -527,7 +527,7 @@ class Manual(KnowledgeEngine):
         #Explicabilidade
         self.explicacao.append({
             'nome': 'desligamentoVinculoNegativo',
-            'premissas': ['Aba Cancel. de Vinculo', 'Busca por \"desligamento\"', 'Não reprovou 4 vezes numa mesma matéria, e' + 
+            'premissas': ['Aba Cancel. de Vinculo', 'Busca por \"desligamento\"', 'Não reprovou 4 vezes numa mesma matéria, e ' + 
                           'não esgotou os trancamentos ou ainda tem mais tempo para finalizar o curso'],
             'fonte': 'Pág. 26 do Manual do Estudante 2023, e Resolução Nº 154/2001 CEPE/UFRPE',
             'tempo': len(self.explicacao) + 1
