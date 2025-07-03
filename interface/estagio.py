@@ -16,9 +16,43 @@ def estagio():
     entrada = campoTexto(
         chave="estagio",
         texto_label="Deseja saber algo mais sobre estágio?",
-        texto_placeholder="Ex.: estágio obrigatório, documentos, etc.."
+        texto_placeholder="Ex.: Estágio obrigatório, Estágio não obrigatório, Requisitos"
     )
 
     if entrada:
         ManualEngine.declare(EstagioEntrada(txt=entrada))
         ManualEngine.imprimirFatos()
+        ManualEngine.run()
+
+    match(st.session_state.get('carregarPagina')):
+        case 'estagioObrigatorio':
+            estagioObrigatorio()
+        case 'estagioNaoObrigatorio':
+            estagioNaoObrigatorio()
+        case 'estagioRequisitos':
+            estagioRequisitos()
+
+#Interface para estágio obrigatório
+def estagioObrigatorio():
+    st.write("O Estágio Supervisionado Obrigatório - é definido no Projeto do Curso, " +
+            "cuja carga horária é requisito para aprovação e obtenção do diploma.")
+
+    st.info(st.session_state.get('explicacao'))
+
+#Interface para estágio não obrigatório
+def estagioNaoObrigatorio():
+    st.write("O Estágio Supervisionado Não-Obrigatório - constui-se em atividade " +
+            "complementar à formação acadêmico-profissional do(a) aluno(a), " +
+            "realizada por livre escolha do mesmo, dentro de sua área de formação, " +
+            "desenvolvido como atividade opcional.")
+    
+    st.info(st.session_state.get('explicacao'))
+
+#Interface para eos requesitos de um estágio
+def estagioRequisitos():
+    st.write("O estágio tem como requisitos: " +
+            "\n\n• Matrícula e frequência regular. " +
+            "\n\n• Celebração de Termo de Compromisso, entre o(a) estudante, a unidade concedente e a instituição de ensino. " +
+            "\n\n• Compatibilidade entre as atividades desenvolvidas no estágio e aquelas previstas no Termo de Compromisso. ")
+    
+    st.info(st.session_state.get('explicacao'))
