@@ -1,4 +1,3 @@
-# interface/avaliacoes.py
 import streamlit as st
 from engine_parts.engine_instance import ManualEngine
 from engine_parts.facts import AvaliacaoEntrada, PrazoRevisaoOK, Nota1, Nota2
@@ -8,6 +7,13 @@ from interface.widgets import campoTexto, campoOpcao, campoNumero
 def avaliacoesInicial():
     st.header("Avaliações e Notas")
     st.write("Aqui você encontra informações sobre seu rendimento acadêmico, avaliações, e o processo de revisão de notas.")
+
+    st.markdown("- A cada semestre, os alunos devem realizar duas verificações de aprendizagem.")
+    st.markdown("- Para ser aprovado por média, o aluno deve obter média 7,0.")
+    st.markdown("- Há a opção de fazer uma terceira verificação, e quem optar por ela terá a menor nota descartada.")
+    st.markdown("- A 3ª Verificação também tem caráter de segunda chamada para quem faltou à 1ª ou 2ª verificação.")
+    st.markdown("- Caso não seja aprovado por média, mas obtenha no mínimo 3,0, o aluno poderá realizar um exame final.")
+    st.markdown("- A aprovação final, considerando a média nas provas e a nota do exame final, ocorre com média de 5,0.")
 
     # Campo de texto para o usuário digitar a dúvida inicial
     entrada = campoTexto(
@@ -62,7 +68,7 @@ def revisaoPrazoExpirado():
 
     st.info(st.session_state.get('explicacao'))
 
-# NOVA FUNÇÃO: Interface para perguntar as notas da 1ª e 2ª VA
+# Interface para perguntar as notas da 1ª e 2ª VA
 def perguntarNotas():
     st.subheader("Verificação de Aprovação por Média")
     st.write("Para calcular sua situação de aprovação, por favor, informe suas notas.")
@@ -113,13 +119,11 @@ def perguntarNotas():
             # Não mude 'carregarPagina' aqui. O engine vai re-executar e
             # disparar a regra de cálculo da média.
 
-# NOVA FUNÇÃO: Interface para exibir o resultado da elegibilidade para o Exame Final
+# Interface para exibir o resultado da elegibilidade para o Exame Final
 def exibirResultadoFinal():
     st.subheader("Resultado da Elegibilidade para Exame Final")
-    # O conteúdo desta função será definido pelas regras no engine.py,
-    # que irão escrever a mensagem específica no Streamlit.
     st.info(st.session_state.get('explicacao'))
-    # Opcional: Adicionar um botão "Reiniciar cálculo" que resetaria Nota1, Nota2 e flags de session_state
+
     if st.button("Reiniciar Verificação de Notas"):
         for fact_id, fact in ManualEngine.facts.items():
             if isinstance(fact, Nota1) or isinstance(fact, Nota2):
