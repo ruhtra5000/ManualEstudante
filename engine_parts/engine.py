@@ -494,7 +494,66 @@ class Manual(KnowledgeEngine):
 
         self.gerarExplicacao()
 
+    # NOVA REGRA: Inicia o fluxo de verificação de notas para cálculo de média/exame final
+    @Rule(AS.av_entrada << AvaliacaoEntrada(txt = L("notas") | L("média") | L("media") | L("exame final") | L("exame")))
+    def iniciarVerificacaoNotas(self, av_entrada):
+        st.session_state['carregarPagina'] = 'perguntarNotas'
+        # Reseta flags de notas para iniciar um novo cálculo
+        st.session_state['nota1_informada'] = False
+        st.session_state['nota2_informada'] = False
 
+        self.explicacao.append({
+            'nome': 'iniciarVerificacaoNotas',
+            'premissas': ['Aba Avaliações e Notas', 'Busca por \'notas\', \'média\' ou \'exame\''],
+            'fonte': 'Pág. 27-28 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+        self.gerarExplicacao()
+        self.retract(av_entrada) # Retrai a entrada inicial para não disparar novamente
+
+    # NOVA REGRA: Calcula a média e determina a situação do aluno
+    @Rule(
+        AS.n1 << Nota1(valor=P(lambda x: True)), # Nota1 está presente
+        AS.n2 << Nota2(valor=P(lambda x: True))  # Nota2 está presente
+    )
+    def avaliarAprovacao(self, n1, n2):
+        media = (n1['valor'] + n2['valor']) / 2.0
+        
+        st.session_state['carregarPagina'] = 'exibirResultadoFinal' # Indica a UI a ser exibida
+
+        mensagem_resultado = ""
+        fonte_explicacao = 'Pág. 27-28 do Manual do Estudante 2023'
+
+        if media >= 7.0:
+            mensagem_resultado = f"Sua média é {media:.2f}. Você está **APROVADO(A) POR MÉDIA!**"
+            st.success(mensagem_resultado)
+            premissas_explicacao = ['Nota1 e Nota2 informadas', f'Média ({media:.2f}) >= 7.0']
+        elif media >= 3.0: # media < 7.0 && media >= 3.0
+            mensagem_resultado = f"Sua média é {media:.2f}. Você está **ELEGÍVEL PARA EXAME FINAL!** Você será aprovado(a) se obtiver média 5.0 (considerando a média das provas e a nota do exame final)."
+            st.warning(mensagem_resultado)
+            premissas_explicacao = ['Nota1 e Nota2 informadas', f'Média ({media:.2f}) >= 3.0 e < 7.0']
+        else: # media < 3.0
+            mensagem_resultado = f"Sua média é {media:.2f}. Você está **REPROVADO(A) SEM DIREITO A EXAME FINAL.**"
+            st.error(mensagem_resultado)
+            premissas_explicacao = ['Nota1 e Nota2 informadas', f'Média ({media:.2f}) < 3.0']
+
+        self.explicacao.append({
+            'nome': 'avaliarAprovacao',
+            'premissas': premissas_explicacao,
+            'fonte': fonte_explicacao,
+            'tempo': len(self.explicacao) + 1
+        })
+        self.gerarExplicacao()
+
+        # Retrai as notas após o cálculo para limpar a base de conhecimento
+        # e permitir um novo cálculo se o usuário informar novas notas.
+        self.retract(n1)
+        self.retract(n2)
+        # Opcional: Resetar as flags de session_state aqui também para garantir
+        # que a UI se reinicie para novas entradas de notas.
+        st.session_state['nota1_informada'] = False
+        st.session_state['nota2_informada'] = False
+        
     #    ______    _ _                              _                           
     #   |  ____|  | | |                       /\   | |                          
     #   | |__ __ _| | |_ __ _ ___    ___     /  \  | |__   ___  _ __   ___  ___ 

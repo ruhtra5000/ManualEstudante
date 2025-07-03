@@ -67,3 +67,9 @@ class Gestante(Fact): #Se o usuário é gestante
 
 class RecursosAdmEntrada(Fact): #Entrada de recursos administrativos
     txt: str
+
+class Nota1(Fact): # Nota da primeira avaliação
+    valor: float
+
+class Nota2(Fact): # Nota da segunda avaliação
+    valor: float
