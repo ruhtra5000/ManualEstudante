@@ -2,5 +2,6 @@ ABA_LABELS = [
     "Matrícula",
     "Disciplina",
     "Cancel. de Vínculo",
-    "Avaliações e Notas"
+    "Avaliações e Notas",
+    "Faltas e Abonos"
 ]
