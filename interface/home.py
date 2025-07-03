@@ -2,19 +2,24 @@ import streamlit as st
 from engine_parts.engine_instance import ManualEngine
 from engine_parts.facts import *
 
+from utils.constants import ABA_LABELS
+
 from interface.matricula import matriculaInicial
 from interface.disciplina import disciplinaInicial
 from interface.cancelamento import cancelamentoInicial
-from utils.constants import ABA_LABELS
 from interface.avaliacoes import avaliacoesInicial
 from interface.faltasAbonos import faltasAbonosInicial
 from interface.recursosAdm import recursosAdmInicial
 from interface.direitosDeveres import direitosDeveresInicial
+from interface.apoioestudantil import apoioEstudantil
+from interface.colacaodegrau import colacaoGrau
+from interface.estagio import estagio
 
 #Função de carregamento da pagina inicial da aplicação
 def homepageInicial():
     st.title("Manual do Estudante")
     abas = st.tabs(ABA_LABELS)
+
 
     st.session_state["aba_ativa"] = "Matrícula"
 
@@ -42,6 +47,12 @@ def processarOpcao(opcao):
             recursosAdmInicial()
         case "Direitos e Deveres":
             direitosDeveresInicial()
+        case "Apoio Estudantil":
+            apoioEstudantil()
+        case "Colação de Grau":
+            colacaoGrau()
+        case "Estágio":
+            estagio()
 
             
     #No final, executa o motor — mas apenas se for a aba ativa

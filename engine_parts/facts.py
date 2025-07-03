@@ -11,6 +11,15 @@ class DisciplinaEntrada(Fact): #Entrada inicial
 class CancelamentoEntrada(Fact): #Entrada inicial
     txt: str
 
+class ApoioEstudantilEntrada(Fact): #Entrada inicial
+    txt: str
+
+class ColacaoGrauEntrada(Fact): #Entrada inicial
+    txt: str
+
+class EstagioEntrada(Fact): #Entrada inicial
+    txt: str
+
 class Sexo(Fact): #Simboliza o sexo do usuário
     valor: str
 
@@ -21,6 +30,9 @@ class PeriodosCursados(Fact): #Armazena a qtde de períodos cursados (inclui o a
     valor: int
 
 class Trancamentos(Fact): #Qtde de trancamentos
+    valor: int
+
+class AnosEvasao(Fact): #Qtde de anos desvinculado da UFAPE
     valor: int
 
 class EdFisica(Fact): #Sinaliza se a disciplina que quer dispensar é Ed. Física
@@ -73,3 +85,6 @@ class Nota1(Fact): # Nota da primeira avaliação
 
 class Nota2(Fact): # Nota da segunda avaliação
     valor: float
+
+class ReprovacoesMesmaMateria(Fact): #Se o usuário ja reprovou 4 vezes numa mesma matéria
+    tipo: bool

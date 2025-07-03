@@ -18,6 +18,7 @@ class Manual(KnowledgeEngine):
         premissas_formatadas = ', '.join(expl["premissas"])
 
         txt = '**Explicação:**\n\n'
+        txt += f"Regra aplicada: {expl['nome']}\n\n"
         txt += f"Premissas: {premissas_formatadas}\n\n"
         txt += f"Fonte: {expl['fonte']}"
 
@@ -78,13 +79,17 @@ class Manual(KnowledgeEngine):
 
         self.gerarExplicacao()
     
-    @Rule(MatriculaEntrada(txt = "aluno especial"))
+    @Rule(
+        MatriculaEntrada(txt = "aluno especial"),
+        ~ConcluinteUfape()
+    )
     def matriculaAlunoEspecialPergunta1(self):
         st.session_state['carregarPagina'] = 'perguntaConcluinte'
 
     @Rule(
         MatriculaEntrada(txt = "aluno especial"),
-        ConcluinteUfape(tipo = False)
+        ConcluinteUfape(tipo = False),
+        ~Egresso()
     )
     def matriculaAlunoEspecialPergunta2(self):
         st.session_state['carregarPagina'] = 'perguntaEgresso'
@@ -141,7 +146,10 @@ class Manual(KnowledgeEngine):
 
         self.gerarExplicacao()
 
-    @Rule(MatriculaEntrada(txt = "trancamento"))
+    @Rule(
+        MatriculaEntrada(txt = "trancamento"),
+        ~PeriodosCursados()
+    )
     def trancamentoMatriculaPergunta1(self):
         st.session_state['carregarPagina'] = 'perguntaPeriodoCursado'
 
@@ -164,7 +172,8 @@ class Manual(KnowledgeEngine):
 
     @Rule(
         MatriculaEntrada(txt = "trancamento"),
-        PeriodosCursados(valor = P(lambda v: v > 2))
+        PeriodosCursados(valor = P(lambda v: v > 2)),
+        ~Trancamentos()
     )
     def trancamentoMatriculaPergunta2(self):
         st.session_state['carregarPagina'] = 'perguntaTrancamentos'
@@ -188,7 +197,8 @@ class Manual(KnowledgeEngine):
 
     @Rule(
         MatriculaEntrada(txt = "trancamento"),
-        Trancamentos(valor = P(lambda v: v < 4))
+        Trancamentos(valor = P(lambda v: v < 4)),
+        ~TrancamentoForcaMaior()
     )
     def trancamentoMatriculaPergunta3(self):
         st.session_state['carregarPagina'] = 'perguntaForcaMaior'
@@ -277,7 +287,8 @@ class Manual(KnowledgeEngine):
     
     @Rule(
         DisciplinaEntrada(txt = "dispensa"), 
-        EdFisica(tipo = True)
+        EdFisica(tipo = True),
+        ~Idade()
     )
     def dispensaEdFisicaPergunta1(self):
         st.session_state['carregarPagina'] = 'perguntaIdade'
@@ -303,7 +314,8 @@ class Manual(KnowledgeEngine):
     @Rule(
         DisciplinaEntrada(txt = "dispensa"), 
         EdFisica(tipo = True), 
-        Idade(valor=P(lambda v: v < 30))
+        Idade(valor=P(lambda v: v < 30)),
+        ~DeficienciaFisica()
     )
     def dispensaEdFisicaPergunta2(self):
         st.session_state['carregarPagina'] = 'perguntaDeficiencia'
@@ -329,7 +341,8 @@ class Manual(KnowledgeEngine):
     @Rule(
         DisciplinaEntrada(txt = "dispensa"), 
         EdFisica(tipo = True), 
-        DeficienciaFisica(tipo = False)
+        DeficienciaFisica(tipo = False),
+        ~MulherComFilhos()
     )
     def dispensaEdFisicaPergunta3(self):
         st.session_state['carregarPagina'] = 'perguntaFilho'
@@ -357,7 +370,8 @@ class Manual(KnowledgeEngine):
     @Rule(
         DisciplinaEntrada(txt = "dispensa"), 
         EdFisica(tipo = True), 
-        MulherComFilhos(tipo = False)
+        MulherComFilhos(tipo = False),
+        ~IncapacidadeRelativa()
     )
     def dispensaEdFisicaPergunta4(self):
         st.session_state['carregarPagina'] = 'perguntaIncapacidadeRelativa'
@@ -383,7 +397,8 @@ class Manual(KnowledgeEngine):
     @Rule(
         DisciplinaEntrada(txt = "dispensa"), 
         EdFisica(tipo = True), 
-        IncapacidadeRelativa(tipo = False)
+        IncapacidadeRelativa(tipo = False),
+        ~Emprego6h()
     )
     def dispensaEdFisicaPergunta5(self):
         st.session_state['carregarPagina'] = 'perguntaEmprego'
@@ -475,6 +490,67 @@ class Manual(KnowledgeEngine):
         })
 
         self.gerarExplicacao()
+        
+    @Rule(CancelamentoEntrada(txt = "abandono"))
+    def abandonoCurso(self):
+        st.session_state['carregarPagina'] = 'abandonoCurso'
+        
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'abandonoCurso',
+            'premissas': ['Aba Cancel. de Vinculo', 'Busca por \"abandono\"'],
+            'fonte': 'Pág. 26 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+    
+    @Rule(
+        CancelamentoEntrada(txt = "desligamento"),
+        ~ReprovacoesMesmaMateria()
+    )
+    def desligamentoVinculoPergunta1(self):
+        st.session_state['carregarPagina'] = 'perguntaReprovacao'
+
+    @Rule(
+        CancelamentoEntrada(txt = "desligamento"),
+        ReprovacoesMesmaMateria(tipo = False),
+        ~TempoRestanteCurso()
+    )
+    def desligamentoVinculoPergunta2(self):
+        st.session_state['carregarPagina'] = 'perguntaTempoRestante'
+
+    @Rule(
+        CancelamentoEntrada(txt = "desligamento"),
+        TempoRestanteCurso(tipo = False),
+        ~Trancamentos()
+    )
+    def desligamentoVinculoPergunta3(self):
+        st.session_state['carregarPagina'] = 'perguntaTrancamentos'
+
+    @Rule(
+        CancelamentoEntrada(txt = "desligamento"),
+        OR(
+            ReprovacoesMesmaMateria(tipo = True),
+            AND(
+                TempoRestanteCurso(tipo = False),
+                Trancamentos(valor = 4)
+            )
+        )
+    )
+    def desligamentoVinculo(self):
+        st.session_state['carregarPagina'] = 'desligamentoVinculo'
+        
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'desligamentoVinculo',
+            'premissas': ['Aba Cancel. de Vinculo', 'Busca por \"desligamento\"', 'Já reprovou 4 vezes numa mesma matéria, ' + 
+                          'ou já esgotou os trancamentos e não tem mais tempo para finalizar o curso'],
+            'fonte': 'Pág. 26 do Manual do Estudante 2023, e Resolução Nº 154/2001 CEPE/UFRPE',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()          
 
     # Regra para verificar se o prazo de revisão expirou
     @Rule(
@@ -493,8 +569,30 @@ class Manual(KnowledgeEngine):
         })
 
         self.gerarExplicacao()
+        
+    @Rule(
+        CancelamentoEntrada(txt = "desligamento"),
+        ReprovacoesMesmaMateria(tipo = False),
+        OR(
+            TempoRestanteCurso(tipo = True),
+            Trancamentos(valor = P(lambda v: v < 4))
+        )
+    )
+    def desligamentoVinculoNegativo(self):
+        st.session_state['carregarPagina'] = 'desligamentoVinculoNegativo'
+        
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'desligamentoVinculoNegativo',
+            'premissas': ['Aba Cancel. de Vinculo', 'Busca por \"desligamento\"', 'Não reprovou 4 vezes numa mesma matéria, e ' + 
+                          'não esgotou os trancamentos ou ainda tem mais tempo para finalizar o curso'],
+            'fonte': 'Pág. 26 do Manual do Estudante 2023, e Resolução Nº 154/2001 CEPE/UFRPE',
+            'tempo': len(self.explicacao) + 1
+        })
 
-    # NOVA REGRA: Inicia o fluxo de verificação de notas para cálculo de média/exame final
+        self.gerarExplicacao()
+
+    # Inicia o fluxo de verificação de notas para cálculo de média/exame final
     @Rule(AS.av_entrada << AvaliacaoEntrada(txt = L("notas") | L("média") | L("media") | L("exame final") | L("exame")))
     def iniciarVerificacaoNotas(self, av_entrada):
         st.session_state['carregarPagina'] = 'perguntarNotas'
@@ -511,7 +609,7 @@ class Manual(KnowledgeEngine):
         self.gerarExplicacao()
         self.retract(av_entrada) # Retrai a entrada inicial para não disparar novamente
 
-    # NOVA REGRA: Calcula a média e determina a situação do aluno
+    # Calcula a média e determina a situação do aluno
     @Rule(
         AS.n1 << Nota1(valor=P(lambda x: True)), # Nota1 está presente
         AS.n2 << Nota2(valor=P(lambda x: True))  # Nota2 está presente
@@ -545,12 +643,11 @@ class Manual(KnowledgeEngine):
         })
         self.gerarExplicacao()
 
-        # Retrai as notas após o cálculo para limpar a base de conhecimento
-        # e permitir um novo cálculo se o usuário informar novas notas.
+        # Retrai as notas após o cálculo para limpar a base de conhecimento e permitir um novo cálculo se o usuário informar novas notas.
         self.retract(n1)
         self.retract(n2)
-        # Opcional: Resetar as flags de session_state aqui também para garantir
-        # que a UI se reinicie para novas entradas de notas.
+        
+        # Reseta as flags de session_state aqui também para garantir que a UI se reinicie para novas entradas de notas.
         st.session_state['nota1_informada'] = False
         st.session_state['nota2_informada'] = False
         
@@ -583,6 +680,97 @@ class Manual(KnowledgeEngine):
             'fonte': 'Pág. 29 do Manual do Estudante 2023. Lei nº 4.375/64',
             'tempo': len(self.explicacao) + 1
         })
+        
+    @Rule(CancelamentoEntrada(txt = "penalidade"))
+    def desligamentoPorPenalidadeDisciplinar(self):
+        st.session_state['carregarPagina'] = 'penalidadeDisciplinar'
+        
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'desligamentoPorPenalidadeDisciplinar',
+            'premissas': ['Aba Cancel. de Vinculo', 'Busca por \"penalidade\"'],
+            'fonte': 'Pág. 26 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    @Rule(CancelamentoEntrada(txt = "transferencia"))
+    def desligamentoPorTransferencia(self):
+        st.session_state['carregarPagina'] = 'transferencia'
+        
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'desligamentoPorTransferencia',
+            'premissas': ['Aba Cancel. de Vinculo', 'Busca por \"transferencia\"'],
+            'fonte': 'Pág. 26-27 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    @Rule(
+        CancelamentoEntrada(txt = 'reintegracao'),
+        ~AnosEvasao()
+    )
+    def reintegracaoPergunta1(self):
+        st.session_state['carregarPagina'] = 'perguntaAnosEvasao'
+
+    @Rule(
+        CancelamentoEntrada(txt = 'reintegracao'),
+        AnosEvasao(valor = P(lambda v: v <= 5)),
+        ~TempoRestanteCurso()
+    )
+    def reintegracaoPergunta2(self):
+        st.session_state['carregarPagina'] = 'perguntaTempoRestante'
+
+    @Rule(
+        CancelamentoEntrada(txt = 'reintegracao'),
+        TempoRestanteCurso(tipo = True),
+        ~ReprovacoesMesmaMateria()
+    )
+    def reintegracaoPergunta3(self):
+        st.session_state['carregarPagina'] = 'perguntaReprovacao'
+
+    @Rule(
+        CancelamentoEntrada(txt = 'reintegracao'),
+        AnosEvasao(valor = P(lambda v: v < 5)),
+        TempoRestanteCurso(tipo = True),
+        ReprovacoesMesmaMateria(tipo = False)
+    )
+    def reintegracao(self):
+        st.session_state['carregarPagina'] = 'reintegracao'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'reintegracao',
+            'premissas': ['Aba Cancel. de Vinculo', 'Busca por \"reintegracao\"', 'Menos que 5 anos de evasão', 
+                          'Consegue finalizar o curso no tempo restante', 'Não tem 4 reprovações numa mesma matéria'],
+            'fonte': 'Pág. 27 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    @Rule(
+        CancelamentoEntrada(txt = 'reintegracao'),
+        OR(
+            AnosEvasao(valor = P(lambda v: v >= 5)),
+            TempoRestanteCurso(tipo = False),
+            ReprovacoesMesmaMateria(tipo = True)
+        )
+    )
+    def reintegracaoNegativa(self):
+        st.session_state['carregarPagina'] = 'reintegracaoNegativa'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'reintegracaoNegativa',
+            'premissas': ['Aba Cancel. de Vinculo', 'Busca por \"reintegracao\"', '5 ou mais anos de evasão, ou ' +
+                          'não consegue finalizar o curso no tempo restante, ou tem 4 reprovações numa mesma matéria'],
+            'fonte': 'Pág. 27 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
 
         self.gerarExplicacao()
 
@@ -598,7 +786,28 @@ class Manual(KnowledgeEngine):
             'nome': 'abonoInvalido',
             'premissas': ['Aba faltas e abonos', 'Busca por \"abono\"', 'Não está sob exercício militar'],
             'fonte': 'Pág. 29 do Manual do Estudante 2023. Lei nº 4.375/64',
-            'Resolulção': '',
+            'tempo': len(self.explicacao) + 1
+        })
+    
+
+    #     _____      _            /\/|             _                              
+    #    / ____|    | |          |/\/             | |                             
+    #   | |     ___ | | __ _  ___ __ _  ___     __| | ___    __ _ _ __ __ _ _   _ 
+    #   | |    / _ \| |/ _` |/ __/ _` |/ _ \   / _` |/ _ \  / _` | '__/ _` | | | |
+    #   | |___| (_) | | (_| | (_| (_| | (_) | | (_| |  __/ | (_| | | | (_| | |_| |
+    #    \_____\___/|_|\__,_|\___\__,_|\___/   \__,_|\___|  \__, |_|  \__,_|\__,_|
+    #                         )_)                            __/ |                
+    #                                                       |___/    
+
+    @Rule(ColacaoGrauEntrada(txt = "colação em separado"))
+    def colacaoEmSeparado(self):
+        st.session_state['carregarPagina'] = 'colacaoEmSeparado'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'colacaoEmSeparado',
+            'premissas': ['Aba colação de grau', 'Busca por \"colação em separado\"'],
+            'fonte': 'Pág. 31 do Manual do Estudante 2023',
             'tempo': len(self.explicacao) + 1
         })
 
@@ -628,6 +837,43 @@ class Manual(KnowledgeEngine):
 
         self.gerarExplicacao()
 
+    @Rule(ColacaoGrauEntrada(txt = "aluno laureado"))
+    def colacaoAlunoLaureado(self):
+        st.session_state['carregarPagina'] = 'colacaoAlunoLaureado'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'colacaoAlunoLaureado',
+            'premissas': ['Aba colação de grau', 'Busca por \"aluno laureado\"'],
+            'fonte': 'Pág. 31 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    #    ______     _    __        _       
+    #   |  ____|   | |  /_/       (_)      
+    #   | |__   ___| |_ __ _  __ _ _  ___  
+    #   |  __| / __| __/ _` |/ _` | |/ _ \ 
+    #   | |____\__ \ || (_| | (_| | | (_) |
+    #   |______|___/\__\__,_|\__, |_|\___/ 
+    #                         __/ |        
+    #                        |___/ 
+    #      
+    @Rule(EstagioEntrada(txt = "estágio obrigatório"))
+    def estagioObrigatorio(self):
+        st.session_state['carregarPagina'] = 'estagioObrigatorio'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'estagioObrigatorio',
+            'premissas': ['Aba Estágio', 'Busca por \"estágio obrigatório\"'],
+            'fonte': 'Pág. 37 e 38 do Manual do Estudante 2023 e resolução 678/2008-CEPE/UFRPE',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
     # Tratamento de faltas caso o usuário tenha incapacidade relativa
     @Rule(
         FaltasAbonosEntrada(txt = 'faltas'),
@@ -641,6 +887,20 @@ class Manual(KnowledgeEngine):
             'nome': 'tratamentoIncapacitadoRelativo',
             'premissas': ['Aba faltas e abonos', 'Busca por \"faltas\"', 'Não é gestante', 'Tem incapacidade relativa'],
             'fonte': 'Pág. 28 do Manual do Estudante 2023. DECRETO-LEI Nº 1044/69.',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+        
+    @Rule(EstagioEntrada(txt = "estágio não obrigatório"))
+    def estagioNaoObrigatorio(self):
+        st.session_state['carregarPagina'] = 'estagioNaoObrigatorio'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'estagioNaoObrigatorio',
+            'premissas': ['Aba Estágio', 'Busca por \"estágio não obrigatório\"'],
+            'fonte': 'Pág. 37 e 38 do Manual do Estudante 2023 e resolução 677/2008-CEPE/UFRPE',
             'tempo': len(self.explicacao) + 1
         })
 
@@ -672,6 +932,43 @@ class Manual(KnowledgeEngine):
         })
 
         self.gerarExplicacao()
+        
+    @Rule(EstagioEntrada(txt = "requisitos"))
+    def estagioRequisitos(self):
+        st.session_state['carregarPagina'] = 'estagioRequisitos'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'estagioRequisitos',
+            'premissas': ['Aba Estágio', 'Busca por \"requisitos\"'],
+            'fonte': 'Pág. 38 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    #                         _         ______     _             _             _   _ _ 
+    #       /\               (_)       |  ____|   | |           | |           | | (_) |
+    #      /  \   _ __   ___  _  ___   | |__   ___| |_ _   _  __| | __ _ _ __ | |_ _| |
+    #     / /\ \ | '_ \ / _ \| |/ _ \  |  __| / __| __| | | |/ _` |/ _` | '_ \| __| | |
+    #    / ____ \| |_) | (_) | | (_) | | |____\__ \ |_| |_| | (_| | (_| | | | | |_| | |
+    #   /_/    \_\ .__/ \___/|_|\___/  |______|___/\__|\__,_|\__,_|\__,_|_| |_|\__|_|_|
+    #            | |                                                                   
+    #            |_|                                                                                                                
+    #                           
+    @Rule(ApoioEstudantilEntrada(txt = "monitoria"))
+    def apoioEstudantilMonitoria(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilMonitoria'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilMonitoria',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"monitoria\"'],
+            'fonte': 'Pág. 32 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
 
 
 #    _____  ______ _____ _    _ _____   _____  ____   _____            _____  __  __ 
@@ -694,6 +991,48 @@ class Manual(KnowledgeEngine):
         })
 
         self.gerarExplicacao()
+    
+    @Rule(ApoioEstudantilEntrada(txt = "pet"))
+    def apoioEstudantilPet(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilPet'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilPet',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"pet\"'],
+            'fonte': 'Pág. 32 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+    
+    @Rule(ApoioEstudantilEntrada(txt = "bia"))
+    def apoioEstudantilBia(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilBia'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilBia',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"bia\"'],
+            'fonte': 'Pág. 32 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    @Rule(ApoioEstudantilEntrada(txt = "pavi"))
+    def apoioEstudantilPavi(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilPavi'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilPavi',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"pavi\"'],
+            'fonte': 'Pág. 32 do Manual do Estudante 2023 e resolução CEPE Nº 676/2008',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
 
     @Rule(RecursosAdmEntrada(txt = "recurso"))
     def recurso(self):
@@ -703,6 +1042,201 @@ class Manual(KnowledgeEngine):
             'nome': 'recurso',
             'premissas': ['Aba recursos administrativos', 'Busca por \"recurso\"'],
             'fonte': 'Pág. 30 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+    @Rule(ApoioEstudantilEntrada(txt = "pibid"))
+    def apoioEstudantilPibid(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilPibid'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilPibid',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"pibid\"'],
+            'fonte': 'Pág. 33 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+        
+    @Rule(ApoioEstudantilEntrada(txt = "pibic"))
+    def apoioEstudantilPibic(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilPibic'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilPibic',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"pibic\"'],
+            'fonte': 'Pág. 33 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    @Rule(ApoioEstudantilEntrada(txt = "prp"))
+    def apoioEstudantilPrp(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilPrp'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilPrp',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"prp\"'],
+            'fonte': 'Pág. 33 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    @Rule(ApoioEstudantilEntrada(txt = "extensão"))
+    def apoioEstudantilExtensao(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilExtensao'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilExtensao',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"extensão\"'],
+            'fonte': 'Pág. 33 e 34 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+    
+    @Rule(ApoioEstudantilEntrada(txt = "mobilidade"))
+    def apoioEstudantilMobilidade(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilMobilidade'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilMobilidade',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"mobilidade\"'],
+            'fonte': 'Pág. 34 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    @Rule(ApoioEstudantilEntrada(txt = "pai"))
+    def apoioEstudantilPai(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilPai'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilPai',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"pai\"'],
+            'fonte': 'Pág. 34 do Manual do Estudante 2023 e resolução Nº 288/2013 do CEPE',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+    
+    @Rule(ApoioEstudantilEntrada(txt = "pad"))
+    def apoioEstudantilPad(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilPad'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilPad',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"pad\"'],
+            'fonte': 'Pág. 34 do Manual do Estudante 2023 e resolução Nº 205/2015 do CEPE',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    @Rule(ApoioEstudantilEntrada(txt = "residencia"))
+    def apoioEstudantilResidencia(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilResidencia'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilResidencia',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"residencia\"'],
+            'fonte': 'Pág. 34 e 35 do Manual do Estudante 2023 e resolução Nº 327/2008 do CONSU, Nº 219/2009 do CEPE e Nº 062/2012 do CONSU',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+    
+    @Rule(ApoioEstudantilEntrada(txt = "volta ao lar"))
+    def apoioEstudantilVoltaAoLar(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilVoltaAoLar'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilVoltaAoLar',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"volta ao lar\"'],
+            'fonte': 'Pág. 35 do Manual do Estudante 2023 e resolução Nº 228/2013 do CEPE',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+    
+    @Rule(ApoioEstudantilEntrada(txt = "pag"))
+    def apoioEstudantilPag(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilPag'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilPag',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"pag\"'],
+            'fonte': 'Pág. 35 do Manual do Estudante 2023 e resolução Nº 112/2014 do CONSU',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+    
+    @Rule(ApoioEstudantilEntrada(txt = "cultura"))
+    def apoioEstudantilCultura(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilCultura'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilCultura',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"cultura\"'],
+            'fonte': 'Pág. 35 e 36 do Manual do Estudante 2023 e resolução Nº 204/2015 do CEPE',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    @Rule(ApoioEstudantilEntrada(txt = "rural"))
+    def apoioEstudantilRural(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilRural'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilRural',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"rural\"'],
+            'fonte': 'Pág. 36 do Manual do Estudante 2023 e resolução Nº 081/2012 do CEPE',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    @Rule(ApoioEstudantilEntrada(txt = "remt"))
+    def apoioEstudantilRemt(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilRemt'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilRemt',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"remt\"'],
+            'fonte': 'Pág. 36 do Manual do Estudante 2023 e resolução Nº 199/2015 UFRPE/CEPE',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+    
+    @Rule(ApoioEstudantilEntrada(txt = "acessibilidade"))
+    def apoioEstudantilAcessibilidade(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilAcessibilidade'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilAcessibilidade',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"acessibilidade\"'],
+            'fonte': 'Pág. 36 e 37 do Manual do Estudante 2023',
             'tempo': len(self.explicacao) + 1
         })
 

@@ -40,7 +40,7 @@ def campoNumero(
         )
         submitted = st.form_submit_button("Enviar")
 
-    if submitted and entrada:
+    if submitted and entrada is not None:
         return entrada
     
     return None
