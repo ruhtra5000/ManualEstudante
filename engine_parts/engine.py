@@ -442,3 +442,90 @@ class Manual(KnowledgeEngine):
         '''st.header("Cancelamento de vínculo")
         st.write("O cancelamento de registro acadêmico é o desligamento efetivo da UFAPE.")'''
         #Falta adicionar a explicabilidade 
+
+
+    #     _____      _            /\/|             _                              
+    #    / ____|    | |          |/\/             | |                             
+    #   | |     ___ | | __ _  ___ __ _  ___     __| | ___    __ _ _ __ __ _ _   _ 
+    #   | |    / _ \| |/ _` |/ __/ _` |/ _ \   / _` |/ _ \  / _` | '__/ _` | | | |
+    #   | |___| (_) | | (_| | (_| (_| | (_) | | (_| |  __/ | (_| | | | (_| | |_| |
+    #    \_____\___/|_|\__,_|\___\__,_|\___/   \__,_|\___|  \__, |_|  \__,_|\__,_|
+    #                         )_)                            __/ |                
+    #                                                       |___/    
+    @Rule(ColacaoGrauEntrada(txt = "colação em separado"))
+    def colacaoEmSeparado(self):
+        st.session_state['carregarPagina'] = 'colacaoEmSeparado'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'colacaoEmSeparado',
+            'premissas': ['Aba colação de grau', 'Busca por \"colação em separado\"'],
+            'fonte': 'Pág. 31 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    @Rule(ColacaoGrauEntrada(txt = "aluno laureado"))
+    def colacaoAlunoLaureado(self):
+        st.session_state['carregarPagina'] = 'colacaoAlunoLaureado'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'colacaoAlunoLaureado',
+            'premissas': ['Aba colação de grau', 'Busca por \"aluno laureado\"'],
+            'fonte': 'Pág. 31 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    #    ______     _    __        _       
+    #   |  ____|   | |  /_/       (_)      
+    #   | |__   ___| |_ __ _  __ _ _  ___  
+    #   |  __| / __| __/ _` |/ _` | |/ _ \ 
+    #   | |____\__ \ || (_| | (_| | | (_) |
+    #   |______|___/\__\__,_|\__, |_|\___/ 
+    #                         __/ |        
+    #                        |___/      
+    @Rule(EstagioEntrada(txt = "estágio obrigatório"))
+    def estagioObrigatorio(self):
+        st.session_state['carregarPagina'] = 'estagioObrigatorio'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'estagioObrigatorio',
+            'premissas': ['Aba Estágio', 'Busca por \"estágio obrigatório\"'],
+            'fonte': 'Pág. 37 e 38 do Manual do Estudante 2023 e resolução 678/2008-CEPE/UFRPE',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    @Rule(EstagioEntrada(txt = "estágio não obrigatório"))
+    def estagioNaoObrigatorio(self):
+        st.session_state['carregarPagina'] = 'estagioNaoObrigatorio'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'estagioNaoObrigatorio',
+            'premissas': ['Aba Estágio', 'Busca por \"estágio não obrigatório\"'],
+            'fonte': 'Pág. 37 e 38 do Manual do Estudante 2023 e resolução 677/2008-CEPE/UFRPE',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    @Rule(EstagioEntrada(txt = "requisitos"))
+    def estagioRequisitos(self):
+        st.session_state['carregarPagina'] = 'estagioRequisitos'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'estagioRequisitos',
+            'premissas': ['Aba Estágio', 'Busca por \"requisitos\"'],
+            'fonte': 'Pág. 38 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
