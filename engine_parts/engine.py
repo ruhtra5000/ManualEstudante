@@ -502,14 +502,14 @@ class Manual(KnowledgeEngine):
     #   | | | (_| | | || (_| \__ \ |  __/  / ____ \| |_) | (_) | | | | (_) \__ \
     #   |_|  \__,_|_|\__\__,_|___/  \___| /_/    \_\_.__/ \___/|_| |_|\___/|___/
     #                                                                           
-    #                                                                           
-    
-    # Regra de página inicial para a aba "Faltas e Abonos"
+    #                                                                          
+    # Caso de busca por "abono"
+    # e pergunta se o usuário está sob exercício militar
     @Rule(FaltasAbonosEntrada(txt = 'abono'))
     def abono(self):
         st.session_state['carregarPagina'] = 'abono'
         
-    # Regra caso o aluno esteja sob exercício militar
+    # Caso o aluno esteja sob exercício militar
     @Rule(
         FaltasAbonosEntrada(txt = 'abono'),
         ExercicioMilitar(tipo = True)
@@ -540,6 +540,75 @@ class Manual(KnowledgeEngine):
             'premissas': ['Aba faltas e abonos', 'Busca por \"abono\"', 'Não está sob exercício militar'],
             'fonte': 'Pág. 29 do Manual do Estudante 2023. Lei nº 4.375/64',
             'Resolulção': '',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    # Caso de busca por "faltas"
+    # e pergunta se o usuário é gestante
+    @Rule(FaltasAbonosEntrada(txt = 'faltas'))
+    def faltas(self):
+        st.session_state['carregarPagina'] = 'faltas'
+
+    # Tratamento de faltas caso o usuário gestante
+    @Rule(
+        FaltasAbonosEntrada(txt = 'faltas'),
+        Gestante(tipo = True)
+    )
+    def tratamentoGestante(self):
+        st.session_state['carregarPagina'] = 'tratamentoGestante'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'tratamentoGestante',
+            'premissas': ['Aba faltas e abonos', 'Busca por \"faltas\"', 'É gestante'],
+            'fonte': 'Pág. 9 do Manual do Estudante 2023. LEI Nº 6202/75.',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    # Tratamento de faltas caso o usuário tenha incapacidade relativa
+    @Rule(
+        FaltasAbonosEntrada(txt = 'faltas'),
+        Gestante(tipo = False),
+        IncapacidadeRelativa(tipo = True)
+        )
+    def tratamentoIncapacitadoRelativo(self):
+        st.session_state['carregarPagina'] = 'tratamentoIncapacitadoRelativo'
+
+        self.explicacao.append({
+            'nome': 'tratamentoIncapacitadoRelativo',
+            'premissas': ['Aba faltas e abonos', 'Busca por \"faltas\"', 'Não é gestante', 'Tem incapacidade relativa'],
+            'fonte': 'Pág. 9 do Manual do Estudante 2023. DECRETO-LEI Nº 1044/69.',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    # Pergunta se o usuário tem alguma incapacidade relativa ou temporária    
+    @Rule(
+        FaltasAbonosEntrada(txt = 'faltas'),
+        Gestante(tipo = False)
+    )
+    def perguntaIncapacidadeRelativa(self):
+        st.session_state['carregarPagina'] = 'perguntaIncapacidadeRelativa'
+
+    # Tratamento caso o usuário não seja gestante nem incapacitado relativo
+    @Rule(
+        FaltasAbonosEntrada(txt = 'faltas'),
+        Gestante(tipo = False),
+        IncapacidadeRelativa(tipo = False)
+    )
+    def nenhumTratamentoFaltas(self):
+        st.session_state['carregarPagina'] = 'nenhumTratamentoFaltas'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'nenhumTratamentoFaltas',
+            'premissas': ['Aba faltas e abonos', 'Busca por \"faltas\"', 'Não é gestante', 'Não tem incapacidade relativa'],
+            'fonte': 'Pág. 9 do Manual do Estudante 2023. LEI Nº 6202/75. DECRETO-LEI Nº 1044/69.',
             'tempo': len(self.explicacao) + 1
         })
 
