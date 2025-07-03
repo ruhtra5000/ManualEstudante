@@ -61,3 +61,6 @@ class FaltasAbonosEntrada(Fact): #Entrada de faltas e abonos
 
 class ExercicioMilitar(Fact): #Se o usuário está em exercício militar
     tipo: bool
+
+class Gestante(Fact): #Se o usuário é gestante
+    tipo: bool
