@@ -873,6 +873,8 @@ class Manual(KnowledgeEngine):
     #                         )_)                            __/ |                
     #                                                       |___/    
 
+    # Regra para colação em separado
+
     @Rule(ColacaoGrauEntrada(txt = "colação em separado"))
     def colacaoEmSeparado(self):
         st.session_state['carregarPagina'] = 'colacaoEmSeparado'
@@ -886,6 +888,8 @@ class Manual(KnowledgeEngine):
         })
 
         self.gerarExplicacao()
+
+    # Regra para aluno laureado
 
     @Rule(ColacaoGrauEntrada(txt = "aluno laureado"))
     def colacaoAlunoLaureado(self):
@@ -909,7 +913,10 @@ class Manual(KnowledgeEngine):
     #   |______|___/\__\__,_|\__, |_|\___/ 
     #                         __/ |        
     #                        |___/ 
-    #      
+    #   
+
+    # Regra para estágio obrigatório
+
     @Rule(EstagioEntrada(txt = "estágio obrigatório"))
     def estagioObrigatorio(self):
         st.session_state['carregarPagina'] = 'estagioObrigatorio'
@@ -924,6 +931,8 @@ class Manual(KnowledgeEngine):
 
         self.gerarExplicacao()
       
+    # Regra para estágio não obrigatório
+
     @Rule(EstagioEntrada(txt = "estágio não obrigatório"))
     def estagioNaoObrigatorio(self):
         st.session_state['carregarPagina'] = 'estagioNaoObrigatorio'
@@ -937,6 +946,8 @@ class Manual(KnowledgeEngine):
         })
 
         self.gerarExplicacao()
+
+    # Regra para requisitos de estágio
       
     @Rule(EstagioEntrada(txt = "requisitos"))
     def estagioRequisitos(self):
@@ -960,8 +971,23 @@ class Manual(KnowledgeEngine):
     #   /_/    \_\ .__/ \___/|_|\___/  |______|___/\__|\__,_|\__,_|\__,_|_| |_|\__|_|_|
     #            | |                                                                   
     #            |_|                                                                                                                
-    #                           
-    @Rule(ApoioEstudantilEntrada(txt = "monitoria"))
+    # 
+
+    #BOLSAS
+
+    #Regra para caso o aluno busque por bolsas, inicie perguntando se ele tem interesse em programa de monitoria
+
+    @Rule(ApoioEstudantilEntrada(txt = "bolsas"))
+    def ApoioEstudantilPergunta1(self):
+        st.session_state['carregarPagina'] = 'perguntaMonitoria'
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "bolsas"),
+        InteresseMonitoria(tipo = True)
+    )
+
+    #Caso sim, redireciona para a página de monitoria
+
     def apoioEstudantilMonitoria(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilMonitoria'
 
@@ -975,7 +1001,23 @@ class Manual(KnowledgeEngine):
 
         self.gerarExplicacao()
 
-    @Rule(ApoioEstudantilEntrada(txt = "pet"))
+    @Rule(
+        ApoioEstudantilEntrada(txt = "bolsas"),   
+        InteresseMonitoria(tipo = False)
+    )
+
+    #Caso não, redireciona para a pergunta sobre o PET
+
+    def ApoioEstudantilPergunta2(self):
+        st.session_state['carregarPagina'] = 'perguntaPet'
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "bolsas"),
+        InteressePet(tipo = True)
+    )
+
+    #Caso o aluno tenha interesse no PET, redireciona para a página do PET
+
     def apoioEstudantilPet(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilPet'
 
@@ -988,8 +1030,24 @@ class Manual(KnowledgeEngine):
         })
 
         self.gerarExplicacao()
-    
-    @Rule(ApoioEstudantilEntrada(txt = "bia"))
+        
+    @Rule(
+        ApoioEstudantilEntrada(txt = "bolsas"),   
+        InteressePet(tipo = False)
+    )
+
+    #Caso o aluno não tenha interesse no PET, redireciona para a pergunta sobre a BIA (Bolsas de Iniciação Acadêmica)
+
+    def ApoioEstudantilPergunta3(self):
+        st.session_state['carregarPagina'] = 'perguntaBia'
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "bolsas"),
+        InteresseBia(tipo = True)
+    )
+
+    #Caso o aluno tenha interesse na BIA, redireciona para a página de BIA
+
     def apoioEstudantilBia(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilBia'
 
@@ -1003,21 +1061,24 @@ class Manual(KnowledgeEngine):
 
         self.gerarExplicacao()
 
-    @Rule(ApoioEstudantilEntrada(txt = "pavi"))
-    def apoioEstudantilPavi(self):
-        st.session_state['carregarPagina'] = 'apoioEstudantilPavi'
 
-        #Explicabilidade
-        self.explicacao.append({
-            'nome': 'apoioEstudantilPavi',
-            'premissas': ['Aba Apoio Estudantil', 'Busca por \"pavi\"'],
-            'fonte': 'Pág. 32 do Manual do Estudante 2023 e resolução CEPE Nº 676/2008',
-            'tempo': len(self.explicacao) + 1
-        })
+    @Rule(
+        ApoioEstudantilEntrada(txt = "bolsas"),   
+        InteresseBia(tipo = False)
+    )
 
-        self.gerarExplicacao()
-    
-    @Rule(ApoioEstudantilEntrada(txt = "pibid"))
+    #Caso o aluno não tenha interesse na BIA, redireciona para a pergunta sobre o PIBID
+
+    def ApoioEstudantilPergunta4(self):
+        st.session_state['carregarPagina'] = 'perguntaPibid'
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "bolsas"),
+        InteressePibid(tipo = True)
+    )
+
+    #Caso o aluno tenha interesse no PIBID, redireciona para a página do PIBID
+
     def apoioEstudantilPibid(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilPibid'
 
@@ -1030,8 +1091,24 @@ class Manual(KnowledgeEngine):
         })
 
         self.gerarExplicacao()
+    
+    @Rule(
+        ApoioEstudantilEntrada(txt = "bolsas"),   
+        InteressePibid(tipo = False)
+    )
+
+    #Caso o aluno não tenha interesse no PIBID, redireciona para a pergunta sobre o PIBIC
+
+    def ApoioEstudantilPergunta5(self):
+        st.session_state['carregarPagina'] = 'perguntaPibic'
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "bolsas"),
+        InteressePibic(tipo = True)
+    )
         
-    @Rule(ApoioEstudantilEntrada(txt = "pibic"))
+    #Caso o aluno tenha interesse no PIBIC, redireciona para a página do PIBIC
+
     def apoioEstudantilPibic(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilPibic'
 
@@ -1044,8 +1121,25 @@ class Manual(KnowledgeEngine):
         })
 
         self.gerarExplicacao()
+    
+     
+    @Rule(
+        ApoioEstudantilEntrada(txt = "bolsas"),   
+        InteressePibic(tipo = False)
+    )
 
-    @Rule(ApoioEstudantilEntrada(txt = "prp"))
+    #Caso o aluno não tenha interesse no PIBIC, redireciona para a pergunta sobre o PRP
+
+    def ApoioEstudantilPergunta6(self):
+        st.session_state['carregarPagina'] = 'perguntaPrp'
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "bolsas"),
+        InteressePrp(tipo = True)
+    )
+
+    #Caso o aluno tenha interesse no PRP, redireciona para a página do PRP
+
     def apoioEstudantilPrp(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilPrp'
 
@@ -1059,7 +1153,23 @@ class Manual(KnowledgeEngine):
 
         self.gerarExplicacao()
 
-    @Rule(ApoioEstudantilEntrada(txt = "extensão"))
+    @Rule(
+        ApoioEstudantilEntrada(txt = "bolsas"),   
+        InteressePrp(tipo = False)
+    )
+
+    #Caso o aluno não tenha interesse no PRP, redireciona para a pergunta sobre Extensão
+
+    def ApoioEstudantilPergunta7(self):
+        st.session_state['carregarPagina'] = 'perguntaExtensao'
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "bolsas"),
+        InteresseExtensao(tipo = True)
+    )
+
+    #Caso o aluno tenha interesse em Extensão, redireciona para a página de Extensão
+
     def apoioEstudantilExtensao(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilExtensao'
 
@@ -1072,8 +1182,133 @@ class Manual(KnowledgeEngine):
         })
 
         self.gerarExplicacao()
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "bolsas"),   
+        InteresseExtensao(tipo = False)
+    )
+
+    #Caso o aluno não tenha interesse em Extensão, redireciona para a página final informando que não possui mais opções de bolsas
+
+    def apoioEstudantilFinalB(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilFinalBolsas'
+
+    # Regras para apoio estudantil em bolsas com busca direta por termos específicos
+
+    @Rule(ApoioEstudantilEntrada(txt = "monitoria"))
+    def apoioEstudantilMonitoria1(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilMonitoria'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilMonitoria',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"monitoria\"'],
+            'fonte': 'Pág. 32 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
     
-    @Rule(ApoioEstudantilEntrada(txt = "mobilidade"))
+    @Rule(ApoioEstudantilEntrada(txt = "pet"))
+    def apoioEstudantilPet1(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilPet'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilPet',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"pet\"'],
+            'fonte': 'Pág. 32 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+    
+    @Rule(ApoioEstudantilEntrada(txt = "bia"))
+    def apoioEstudantilBia1(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilBia'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilBia',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"bia\"'],
+            'fonte': 'Pág. 32 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+    
+    @Rule(ApoioEstudantilEntrada(txt = "pibid"))
+    def apoioEstudantilPibid1(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilPibid'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilPibid',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"pibid\"'],
+            'fonte': 'Pág. 33 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+    
+    @Rule(ApoioEstudantilEntrada(txt = "pibic"))
+    def apoioEstudantilPibic1(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilPibic'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilPibic',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"pibic\"'],
+            'fonte': 'Pág. 33 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+    
+    @Rule(ApoioEstudantilEntrada(txt = "prp"))
+    def apoioEstudantilPrp1(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilPrp'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilPrp',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"prp\"'],
+            'fonte': 'Pág. 33 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    @Rule(ApoioEstudantilEntrada(txt = "extensão"))
+    def apoioEstudantilExtensao1(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilExtensao'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilExtensao',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"extensão\"'],
+            'fonte': 'Pág. 33 e 34 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    #AUXILIO
+    
+    #Regra para caso o aluno busque por auxílios, inicie perguntando se ele tem interesse em programa de mobilidade
+
+    @Rule(ApoioEstudantilEntrada(txt = "auxílios"))
+
+    def ApoioEstudantilPerguntaAuxilio1(self):
+        st.session_state['carregarPagina'] = 'perguntaMobilidade'
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "auxílios"),
+        InteresseMobilidade(tipo = True)
+    )
+
+    #Caso sim, redireciona para a página de mobilidade
+
     def apoioEstudantilMobilidade(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilMobilidade'
 
@@ -1087,7 +1322,23 @@ class Manual(KnowledgeEngine):
 
         self.gerarExplicacao()
 
-    @Rule(ApoioEstudantilEntrada(txt = "pai"))
+    @Rule(
+        ApoioEstudantilEntrada(txt = "auxílios"),   
+        InteresseMobilidade(tipo = False)
+    )
+
+    #Caso não, redireciona para a pergunta sobre o programa PAI
+
+    def ApoioEstudantilPerguntaAuxilio2(self):
+        st.session_state['carregarPagina'] = 'perguntaPai'
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "auxílios"),
+        InteressePai(tipo = True)
+    )
+
+    #Caso o aluno tenha interesse no PAI, redireciona para a página do PAI
+
     def apoioEstudantilPai(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilPai'
 
@@ -1100,8 +1351,24 @@ class Manual(KnowledgeEngine):
         })
 
         self.gerarExplicacao()
-    
-    @Rule(ApoioEstudantilEntrada(txt = "pad"))
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "auxílios"),   
+        InteressePai(tipo = False)
+    )
+
+    #Caso o aluno não tenha interesse no PAI, redireciona para a pergunta sobre o PAD
+
+    def ApoioEstudantilPerguntaAuxilio3(self):
+        st.session_state['carregarPagina'] = 'perguntaPad'
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "auxílios"),
+        InteressePad(tipo = True)
+    )
+
+    #Caso o aluno tenha interesse no PAD, redireciona para a página do PAD
+
     def apoioEstudantilPad(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilPad'
 
@@ -1115,7 +1382,23 @@ class Manual(KnowledgeEngine):
 
         self.gerarExplicacao()
 
-    @Rule(ApoioEstudantilEntrada(txt = "residencia"))
+    @Rule(
+        ApoioEstudantilEntrada(txt = "auxílios"),   
+        InteressePad(tipo = False)
+    )
+
+    #Caso o aluno não tenha interesse no PAD, redireciona para a pergunta sobre residência
+
+    def ApoioEstudantilPerguntaAuxilio4(self):
+        st.session_state['carregarPagina'] = 'perguntaResidencia'
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "auxílios"),
+        InteresseResidencia(tipo = True)
+    )
+
+    #Caso o aluno tenha interesse em residência, redireciona para a página de residência
+
     def apoioEstudantilResidencia(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilResidencia'
 
@@ -1128,8 +1411,24 @@ class Manual(KnowledgeEngine):
         })
 
         self.gerarExplicacao()
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "auxílios"),   
+        InteresseResidencia(tipo = False)
+    )
+
+    #Caso o aluno não tenha interesse em residência, redireciona para a pergunta sobre volta ao lar
+
+    def ApoioEstudantilPerguntaAuxilio5(self):
+        st.session_state['carregarPagina'] = 'perguntaVoltaAoLar'
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "auxílios"),
+        InteresseVoltaAoLar(tipo = True)
+    )
     
-    @Rule(ApoioEstudantilEntrada(txt = "volta ao lar"))
+    #Caso o aluno tenha interesse em volta ao lar, redireciona para a página de volta ao lar
+
     def apoioEstudantilVoltaAoLar(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilVoltaAoLar'
 
@@ -1142,8 +1441,24 @@ class Manual(KnowledgeEngine):
         })
 
         self.gerarExplicacao()
-    
-    @Rule(ApoioEstudantilEntrada(txt = "pag"))
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "auxílios"),   
+        InteresseVoltaAoLar(tipo = False)
+    )
+
+    #Caso o aluno não tenha interesse em volta ao lar, redireciona para a pergunta sobre o PAG
+
+    def ApoioEstudantilPerguntaAuxilio6(self):
+        st.session_state['carregarPagina'] = 'perguntaPag'
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "auxílios"),
+        InteressePag(tipo = True)
+    )
+
+    #Caso o aluno tenha interesse no PAG, redireciona para a página do PAG
+
     def apoioEstudantilPag(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilPag'
 
@@ -1156,22 +1471,24 @@ class Manual(KnowledgeEngine):
         })
 
         self.gerarExplicacao()
-    
-    @Rule(ApoioEstudantilEntrada(txt = "cultura"))
-    def apoioEstudantilCultura(self):
-        st.session_state['carregarPagina'] = 'apoioEstudantilCultura'
 
-        #Explicabilidade
-        self.explicacao.append({
-            'nome': 'apoioEstudantilCultura',
-            'premissas': ['Aba Apoio Estudantil', 'Busca por \"cultura\"'],
-            'fonte': 'Pág. 35 e 36 do Manual do Estudante 2023 e resolução Nº 204/2015 do CEPE',
-            'tempo': len(self.explicacao) + 1
-        })
+    @Rule(
+        ApoioEstudantilEntrada(txt = "auxílios"),   
+        InteressePag(tipo = False)
+    )
 
-        self.gerarExplicacao()
+    #Caso o aluno não tenha interesse no PAG, redireciona para a pergunta sobre o programa rural
 
-    @Rule(ApoioEstudantilEntrada(txt = "rural"))
+    def ApoioEstudantilPerguntaAuxilio7(self):
+        st.session_state['carregarPagina'] = 'perguntaRural'
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "auxílios"),
+        InteresseRural(tipo = True)
+    )
+
+    #Caso o aluno tenha interesse no programa rural, redireciona para a página do programa rural
+
     def apoioEstudantilRural(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilRural'
 
@@ -1185,7 +1502,193 @@ class Manual(KnowledgeEngine):
 
         self.gerarExplicacao()
 
-    @Rule(ApoioEstudantilEntrada(txt = "remt"))
+    @Rule(
+        ApoioEstudantilEntrada(txt = "auxílios"),   
+        InteresseRural(tipo = False)
+    )
+
+    #Caso o aluno não tenha interesse no programa rural, redireciona para a página final informando que não possui mais opções de auxílios
+
+    def apoioEstudantilFinalA(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilFinalAuxilios'
+
+    # Regras para apoio estudantil em auxílios com busca direta por termos específicos
+
+    @Rule(ApoioEstudantilEntrada(txt = "mobilidade"))
+    def apoioEstudantilMobilidade1(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilMobilidade'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilMobilidade',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"mobilidade\"'],
+            'fonte': 'Pág. 34 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+    
+    @Rule(ApoioEstudantilEntrada(txt = "pai"))
+    def apoioEstudantilPai1(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilPai'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilPai',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"pai\"'],
+            'fonte': 'Pág. 34 do Manual do Estudante 2023 e resolução Nº 288/2013 do CEPE',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    @Rule(ApoioEstudantilEntrada(txt = "pad"))
+    def apoioEstudantilPad1(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilPad'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilPad',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"pad\"'],
+            'fonte': 'Pág. 34 do Manual do Estudante 2023 e resolução Nº 205/2015 do CEPE',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+    
+    @Rule(ApoioEstudantilEntrada(txt = "residência"))
+    def apoioEstudantilResidencia1(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilResidencia'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilResidencia',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"residencia\"'],
+            'fonte': 'Pág. 34 e 35 do Manual do Estudante 2023 e resolução Nº 327/2008 do CONSU, Nº 219/2009 do CEPE e Nº 062/2012 do CONSU',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+     
+    @Rule(ApoioEstudantilEntrada(txt = "volta ao lar"))
+    def apoioEstudantilVoltaAoLar1(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilVoltaAoLar'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilVoltaAoLar',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"volta ao lar\"'],
+            'fonte': 'Pág. 35 do Manual do Estudante 2023 e resolução Nº 228/2013 do CEPE',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+    
+    @Rule(ApoioEstudantilEntrada(txt = "pag"))
+    def apoioEstudantilPag1(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilPag'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilPag',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"pag\"'],
+            'fonte': 'Pág. 35 do Manual do Estudante 2023 e resolução Nº 112/2014 do CONSU',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    @Rule(ApoioEstudantilEntrada(txt = "rural"))
+    def apoioEstudantilRural1(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilRural'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilRural',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"rural\"'],
+            'fonte': 'Pág. 36 do Manual do Estudante 2023 e resolução Nº 081/2012 do CEPE',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+
+    #APOIO
+    
+    #Regra para caso o aluno busque por programas de apoio, inicie perguntando se ele tem interesse no programa PAVI
+
+    @Rule(ApoioEstudantilEntrada(txt = "programas de apoio"))
+
+    def ApoioEstudantilPerguntaApoio1(self):
+        st.session_state['carregarPagina'] = 'perguntaPavi'
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "programas de apoio"),
+        InteressePavi(tipo = True)
+    )
+
+    #Caso sim, redireciona para a página do PAVI
+
+    def apoioEstudantilPavi(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilPavi'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilPavi',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"pavi\"'],
+            'fonte': 'Pág. 32 do Manual do Estudante 2023 e resolução CEPE Nº 676/2008',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "programas de apoio"),   
+        InteressePavi(tipo = False)
+    )
+
+    #Caso não, redireciona para a pergunta sobre cultura
+
+    def ApoioEstudantilPerguntaApoio2(self):
+        st.session_state['carregarPagina'] = 'perguntaCultura'
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "programas de apoio"),
+        InteresseCultura(tipo = True)
+    )
+
+    #Caso o aluno tenha interesse em cultura, redireciona para a página de apoio estudantil cultura
+    
+    def apoioEstudantilCultura(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilCultura'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilCultura',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"cultura\"'],
+            'fonte': 'Pág. 35 e 36 do Manual do Estudante 2023 e resolução Nº 204/2015 do CEPE',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "programas de apoio"),   
+        InteresseCultura(tipo = False)
+    )
+
+    #Caso o aluno não tenha interesse em cultura, redireciona para a pergunta sobre o REMT
+
+    def ApoioEstudantilPerguntaApoio3(self):
+        st.session_state['carregarPagina'] = 'perguntaRemt'
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "programas de apoio"),
+        InteresseRemt(tipo = True)
+    )
+
+    #Caso o aluno tenha interesse no REMT, redireciona para a página do REMT
+
     def apoioEstudantilRemt(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilRemt'
 
@@ -1198,8 +1701,24 @@ class Manual(KnowledgeEngine):
         })
 
         self.gerarExplicacao()
-    
-    @Rule(ApoioEstudantilEntrada(txt = "acessibilidade"))
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "programas de apoio"),   
+        InteresseRemt(tipo = False)
+    )
+
+    #Caso o aluno não tenha interesse no REMT, redireciona para a pergunta sobre acessibilidade
+
+    def ApoioEstudantilPerguntaApoio4(self):
+        st.session_state['carregarPagina'] = 'perguntaAcessibilidade'
+
+    @Rule(
+        ApoioEstudantilEntrada(txt = "programas de apoio"),
+        InteresseAcessibilidade(tipo = True)
+    )
+
+    #Caso o aluno tenha interesse em acessibilidade, redireciona para a página de apoio estudantil acessibilidade
+
     def apoioEstudantilAcessibilidade(self):
         st.session_state['carregarPagina'] = 'apoioEstudantilAcessibilidade'
 
@@ -1212,6 +1731,75 @@ class Manual(KnowledgeEngine):
         })
 
         self.gerarExplicacao()
+    
+    @Rule(
+        ApoioEstudantilEntrada(txt = "programas de apoio"),   
+        InteresseAcessibilidade(tipo = False)
+    )
+
+    #Caso o aluno não tenha interesse em acessibilidade, redireciona para a página final informando que não possui mais opções de apoio
+
+    def apoioEstudantilFinalApoio(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilFinal'
+
+    # Regras para apoio estudantil em programas de apoio com busca direta por termos específicos
+
+    @Rule(ApoioEstudantilEntrada(txt = "pavi"))
+    def apoioEstudantilPavi1(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilPavi'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilPavi',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"pavi\"'],
+            'fonte': 'Pág. 32 do Manual do Estudante 2023 e resolução CEPE Nº 676/2008',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    @Rule(ApoioEstudantilEntrada(txt = "cultura"))
+    def apoioEstudantilCultura1(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilCultura'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilCultura',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"cultura\"'],
+            'fonte': 'Pág. 35 e 36 do Manual do Estudante 2023 e resolução Nº 204/2015 do CEPE',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+    
+    @Rule(ApoioEstudantilEntrada(txt = "remt"))
+    def apoioEstudantilRemt1(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilRemt'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilRemt',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"remt\"'],
+            'fonte': 'Pág. 36 do Manual do Estudante 2023 e resolução Nº 199/2015 UFRPE/CEPE',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
+    @Rule(ApoioEstudantilEntrada(txt = "acessibilidade"))
+    def apoioEstudantilAcessibilidade1(self):
+        st.session_state['carregarPagina'] = 'apoioEstudantilAcessibilidade'
+
+        #Explicabilidade
+        self.explicacao.append({
+            'nome': 'apoioEstudantilAcessibilidade',
+            'premissas': ['Aba Apoio Estudantil', 'Busca por \"acessibilidade\"'],
+            'fonte': 'Pág. 36 e 37 do Manual do Estudante 2023',
+            'tempo': len(self.explicacao) + 1
+        })
+
+        self.gerarExplicacao()
+
 
     #    _____  ______ _____ _    _ _____   _____  ____   _____            _____  __  __ 
     #   |  __ \|  ____/ ____| |  | |  __ \ / ____|/ __ \ / ____|     /\   |  __ \|  \/  |
