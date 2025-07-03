@@ -124,8 +124,6 @@ def exibirResultadoFinal():
     st.subheader("Resultado da Elegibilidade para Exame Final")
     st.info(st.session_state.get('explicacao'))
 
-    st.write    
-    
     if st.button("Reiniciar Verificação de Notas"):
         for fact_id, fact in ManualEngine.facts.items():
             if isinstance(fact, Nota1) or isinstance(fact, Nota2):
