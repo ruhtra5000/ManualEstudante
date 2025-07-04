@@ -833,13 +833,12 @@ class Manual(KnowledgeEngine):
         })
 
         self.gerarExplicacao()
-  
-      # Pergunta se o usuário tem alguma incapacidade relativa ou temporária    
     
     # Pergunta se o usuário tem alguma incapacidade relativa ou temporária
     @Rule(
         FaltasAbonosEntrada(txt = 'faltas'),
-        Gestante(tipo = False)
+        Gestante(tipo = False),
+        ~IncapacidadeRelativa()
     )
     def perguntaIncapacidadeRelativa(self):
         st.session_state['carregarPagina'] = 'perguntaIncapacidadeRelativa'
